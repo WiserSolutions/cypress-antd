@@ -7,7 +7,9 @@
     "url": "git+https://github.com/WiserSolutions/cypress-antd"
   },
   "author": "Wiser Solutions, Inc.",
-  "contributors": ["Jan Konopásek"],
+  "contributors": [
+    "Jan Konopásek"
+  ],
   "license": "MIT",
   "main": "./lib/index.js",
   "module": "./es/index.js",
@@ -18,7 +20,8 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.js\" --loglevel warn",
     "lint": "eslint -f @wisersolutions/eslint-formatter-idea ./src",
-    "test": "jest 'src/'",
+    "test": "cypress run",
+    "tdd": "cypress open",
     "build": "transpile-js",
     "prepublishOnly": "npm run build"
   },
@@ -26,13 +29,16 @@
     "@wisersolutions/eslint-config": "^1.0.4",
     "@wisersolutions/eslint-formatter-idea": "^1.0.3",
     "@wisersolutions/transpile-js": "^0.0.3",
+    "antd": "^3.20.0",
     "babel-eslint": "^9.0.0",
-    "babel-jest": "^23.6.0",
+    "cypress": "^3.3.1",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^3.6.0",
+    "eslint-plugin-cypress": "^2.2.1",
     "eslint-plugin-react": "^7.13.0",
-    "jest": "^23.6.0",
-    "prettier": "^1.17.1"
+    "prettier": "^1.17.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5"
