@@ -8,7 +8,6 @@ import {
   expectDrawerToClose
 } from '../../src/drawer'
 
-const toggleId = 'open-drawer'
 const renderDrawer = ({
   title = 'Dummy Drawer Title',
   content = 'Dummy drawer content…',
@@ -19,7 +18,7 @@ const renderDrawer = ({
       const [visible, setVisible] = React.useState(defaultVisible)
       return (
         <>
-          <Button id={toggleId} onClick={() => setVisible(true)}>
+          <Button id="open-drawer" onClick={() => setVisible(true)}>
             Open Drawer
           </Button>
           <Drawer visible={visible} title={title} onClose={() => setVisible(false)}>
@@ -30,6 +29,7 @@ const renderDrawer = ({
     }
     return <App />
   })
+const getToggle = () => cy.get('#open-drawer')
 
 describe('getDrawer', () => {
   it('finds open `Drawer`', () => {
@@ -63,9 +63,22 @@ describe('closeDrawer', () => {
 describe('expectDrawerTo(Open|Close)', () => {
   it('waits for a drawer to (dis)appear', () => {
     renderDrawer()
-    cy.get(`#${toggleId}`).click()
+    getToggle().click()
     expectDrawerToOpen()
     closeDrawer()
     expectDrawerToClose()
+  })
+})
+
+describe('inside `within`', () => {
+  it('works just as well', () => {
+    renderDrawer()
+    getToggle()
+      .click()
+      .within(() => {
+        expectDrawerToOpen()
+        closeDrawer()
+        expectDrawerToClose()
+      })
   })
 })

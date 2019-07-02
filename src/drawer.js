@@ -1,9 +1,14 @@
+import { absoluteRoot } from '@wisersolutions/cypress-without'
+
 import { expectVisibleText } from './utils'
 
-export const getDrawer = () => cy.get('.ant-drawer:visible')
-export const getDrawerTitle = () => getDrawer().find('.ant-drawer-title')
+export const getDrawer = options => absoluteRoot(options).find('.ant-drawer:visible', options)
+export const getDrawerTitle = options => getDrawer(options).find('.ant-drawer-title', options)
 
-export const closeDrawer = () => cy.get('.ant-drawer-close').click()
+export const closeDrawer = options =>
+  getDrawer(options)
+    .find('.ant-drawer-close', options)
+    .click(options)
 
 export const expectDrawerTitle = expectVisibleText(getDrawerTitle)
 
