@@ -1,6 +1,8 @@
+import { absoluteRoot } from '@wisersolutions/cypress-without'
+
 import { logAndMute, MUTE } from './utils'
 
-export const getDropdown = options => cy.get('.ant-dropdown:visible', options)
+export const getDropdown = options => absoluteRoot(options).find('.ant-dropdown:visible', options)
 
 export const getDropdownItem = (label, options) =>
   getDropdown(options).contains('.ant-dropdown-menu-item', label, options)

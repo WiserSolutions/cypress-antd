@@ -73,3 +73,15 @@ describe('expectDropdownToOpen & expectDropdownToClose', () => {
     expectDropdownToClose()
   })
 })
+
+describe('inside a `within`', () => {
+  it('works just as well', () => {
+    renderDropdown()
+    getToggle().within(() => {
+      cy.root().then(openDropdown())
+      expectDropdownToOpen()
+      selectDropdownItem('First item')
+      expectDropdownToClose()
+    })
+  })
+})
