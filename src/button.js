@@ -1,3 +1,1 @@
-export function getButton(label, options) {
-  return cy.contains('button', label, options)
-}
+export const getButton = (label, options) => cy.contains('button', label, options)
