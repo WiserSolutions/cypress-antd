@@ -1,6 +1,7 @@
 import { logAndMute, MUTE, tickIfOnClock } from './utils'
+import { absoluteRoot } from '@wisersolutions/cypress-without'
 
-export const getPopover = () => cy.get('.ant-popover:visible')
+export const getPopover = () => absoluteRoot().find('.ant-popover:visible')
 
 export const showPopover = options => $el => {
   const opts = logAndMute('showPopover', '', options)

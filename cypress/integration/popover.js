@@ -35,3 +35,14 @@ describe('hidePopover', () => {
     getPopover().should('not.exist')
   })
 })
+
+describe('inside `within`', () => {
+  it('works just as well', () => {
+    renderPopover()
+    getToggle().within(() => {
+      cy.root().then(showPopover())
+      getPopover().should('exist')
+      cy.root().then(hidePopover())
+    })
+  })
+})
