@@ -1,6 +1,6 @@
 import { absoluteRoot } from '@wisersolutions/cypress-without'
 
-import { logAndMute, MUTE } from './utils'
+import { logAndMute, triggerAliased } from './utils'
 
 export const getDropdown = options => absoluteRoot(options).find('.ant-dropdown:visible', options)
 
@@ -10,15 +10,9 @@ export const getDropdownItem = (label, options) =>
 export const selectDropdownItem = (label, options) =>
   getDropdownItem(label, logAndMute('selectDropdownItem', label, options)).click()
 
-export const openDropdown = options => $el => {
-  const opts = logAndMute('openDropdown', '', options)
-  cy.wrap($el, MUTE).trigger('mouseover', opts)
-}
+export const openDropdown = triggerAliased('openDropdown', 'mouseover')
 
-export const closeDropdown = options => $el => {
-  const opts = logAndMute('closeDropdown', '', options)
-  cy.wrap($el, MUTE).trigger('mouseout', opts)
-}
+export const closeDropdown = triggerAliased('closeDropdown', 'mouseout')
 
 export const expectDropdownToOpen = options => getDropdown(options).should('exist')
 
