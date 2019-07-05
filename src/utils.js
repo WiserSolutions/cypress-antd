@@ -1,10 +1,12 @@
 import { snakeCase } from 'lodash'
 
+// region: Logging
+
 export const MUTE = { log: false }
 
-export const mute = options => Object.assign({}, options, MUTE)
+const mute = options => Object.assign({}, options, MUTE)
 
-export function log(name, message = '', options = { log: true }) {
+function log(name, message = '', options = { log: true }) {
   if (options.log) {
     cy.wrap({ name, displayName: snakeCase(name), message }, MUTE).then(Cypress.log)
   }
@@ -15,7 +17,30 @@ export function logAndMute(name, message, options = { log: true }) {
   return mute(options)
 }
 
+// endregion
+// region: Clock
+
+export const getClock = callback =>
+  cy.wrap([], MUTE).then(function() {
+    callback(this.clock)
+  })
+
+export const tickIfOnClock = (interval = 100) =>
+  getClock(clock => {
+    if (clock) clock.tick(interval)
+  })
+
+// endregion
+// region: Macros
+
+export const triggerAliased = (commandName, eventName, defaultOptions = {}) => options => $el => {
+  const opts = logAndMute(commandName, '', options)
+  cy.wrap($el, MUTE).trigger(eventName, { ...defaultOptions, ...opts })
+}
+
 export const expectVisibleText = selector => expectedText =>
   selector()
     .should('be.visible')
     .and('have.text', expectedText)
+
+// endregion
