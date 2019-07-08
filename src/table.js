@@ -1,4 +1,4 @@
-import { isUndefined, isNumber, get } from 'lodash'
+import { isUndefined, isNumber, isNil, get } from 'lodash'
 
 import { logAndMute } from './utils'
 import { absoluteRoot } from '@wisersolutions/cypress-without'
@@ -28,7 +28,7 @@ export const SORT_ORDER = {
  */
 export function getTable({ scroll = true, fixed, ...options } = {}) {
   return scroll
-    ? cy.get(fixed ? `.ant-table-fixed-${fixed}` : '.ant-table-scroll', options)
+    ? cy.get(fixed ? `.ant-table-fixed-${fixed === true ? 'left' : fixed}` : '.ant-table-scroll', options)
     : cy.get('.ant-table-content')
 }
 
@@ -44,7 +44,7 @@ export function getTableColumnHeader(columnIdxOrLabel, options) {
     : getTable(options).contains('.ant-table-thead > tr > th', columnIdxOrLabel, options)
 }
 
-export function getTableColumnSorter(columnIdxOrLabel, { sortOrder = SORT_ORDER.ASCENDING, ...options }) {
+export function getTableColumnSorter(columnIdxOrLabel, { sortOrder = SORT_ORDER.ASCENDING, ...options } = {}) {
   return getTableColumnHeader(columnIdxOrLabel, options).find(
     `.ant-table-column-sorter-${sortOrder === SORT_ORDER.DESCENDING ? 'down' : 'up'}`,
     options
@@ -94,13 +94,17 @@ export function expectTableRows(expectedRows, options) {
   )
 }
 
-export function expectTableSortedBy(columnLabel, options) {
+export function expectTableSortedBy(columnIdxOrLabel, options = {}) {
+  const shouldNotBeSorted = isNil(columnIdxOrLabel)
   const opts = logAndMute(
     'expectTableSortedBy',
-    `${columnLabel}, ${options.sortOrder === SORT_ORDER.DESCENDING ? 'descending' : 'ascending'}`,
+    shouldNotBeSorted
+      ? 'none (unsorted)'
+      : `${columnIdxOrLabel}, ${options.sortOrder === SORT_ORDER.DESCENDING ? 'descending' : 'ascending'}`,
     options
   )
-  getTableColumnSorter(columnLabel, opts).should('have.class', 'on')
+  if (shouldNotBeSorted) cy.get('.ant-table-column-sorter.on').should('not.exist')
+  else getTableColumnSorter(columnIdxOrLabel, opts).should('have.class', 'on')
 }
 
 /**
@@ -108,21 +112,21 @@ export function expectTableSortedBy(columnLabel, options) {
  * Clicking on a column sorted in ascending order sorts in descending order. Clicking on descending-sorted column
  * removes the sorting. This function has to be used in a similar fashion.
  */
-export function sortTableBy(columnLabel, options) {
-  const opts = logAndMute('sortTableBy', columnLabel, options)
-  getTableColumnHeader(columnLabel, opts)
+export function sortTableBy(columnIdxOrLabel, options) {
+  const opts = logAndMute('sortTableBy', columnIdxOrLabel, options)
+  getTableColumnHeader(columnIdxOrLabel, opts)
     .find('.ant-table-column-sorters', opts)
     .click(opts)
 }
 
-export function filterTableBy(columnLabel, values, options) {
-  const opts = logAndMute('filterTableBy', `${columnLabel}: ${values.join(', ')}`, options)
-  getTableFiltersDropdownToggle(columnLabel, opts).click()
+export function filterTableBy(columnIdxOrLabel, values, options) {
+  const opts = logAndMute('filterTableBy', `${columnIdxOrLabel}: ${values.join(', ')}`, options)
+  getTableFiltersDropdownToggle(columnIdxOrLabel, opts).click()
   absoluteRoot(opts)
     .find('.ant-table-filter-dropdown:visible')
     .within(() => {
       values.forEach(value => cy.contains('.ant-dropdown-menu-item', value).click())
-      cy.find(`.ant-table-filter-dropdown-link${values.length ? '.confirm' : '.clear'}`).click()
+      cy.get(`.ant-table-filter-dropdown-link${values.length ? '.confirm' : '.clear'}`).click()
       cy.root().should('not.be.visible')
     })
 }
