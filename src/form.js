@@ -1,6 +1,7 @@
 import { forEach, isEmpty, isUndefined, merge, isArray, mapValues, map, isNumber, isObject } from 'lodash'
 
 import { logAndMute, MUTE, tickIfOnClock } from './utils'
+import { absoluteRoot } from '@wisersolutions/cypress-without'
 
 export const FIELD_TYPE = {
   INPUT: 'input',
@@ -154,11 +155,15 @@ export function expectFormFields(fields, { values, errors, ...options } = {}) {
 
 export function chooseSelectDropdownOption(value, options) {
   const opts = logAndMute('chooseSelectOption', value, options)
-  cy.contains('.ant-select-dropdown:visible .ant-select-dropdown-menu-item', value, opts).click(opts)
+  absoluteRoot(opts)
+    .contains('.ant-select-dropdown:visible .ant-select-dropdown-menu-item', value, opts)
+    .click(opts)
 }
 
 export function expectSelectDropdownToClose(options) {
-  cy.get('.ant-select-dropdown:visible', options).should('not.exist')
+  absoluteRoot(options)
+    .find('.ant-select-dropdown:visible', options)
+    .should('not.exist')
 }
 
 export const setInputValue = (value, { append, ...options } = {}) => $el => {

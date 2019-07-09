@@ -256,6 +256,14 @@ describe('interactions', () => {
         .then(setSelectValue())
         .then(expectSelectValue())
     })
+
+    it('works inside `within`', () => {
+      getFormField(mood).within(() => {
+        cy.root()
+          .then(setSelectValue('Sad'))
+          .then(expectSelectValue('Sad'))
+      })
+    })
   })
 
   describe('setMultiselectValue', () => {
