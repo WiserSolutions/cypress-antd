@@ -15,7 +15,8 @@ import {
   setMultiselectValue,
   clearMultiselect,
   setFormFieldValue,
-  setFormFieldValues
+  setFormFieldValues,
+  setTagsValue
 } from '../../src/form'
 
 const renderForm = () =>
@@ -69,6 +70,9 @@ const renderForm = () =>
           <Select.Option key="sad">Sad</Select.Option>
         </Select>
       </Form.Item>
+      <Form.Item label="Tags">
+        <Select mode="tags" defaultValue={['song']} />
+      </Form.Item>
     </Form>
   ))
 
@@ -81,9 +85,10 @@ const fields = {
   duration: { label: 'Duration', type: FIELD_TYPE.NUMBER_INPUT },
   restriction: { label: 'Restriction', type: FIELD_TYPE.RADIO },
   scale: { label: 'Scale', type: FIELD_TYPE.SELECT },
-  mood: { label: 'Mood', type: FIELD_TYPE.SELECT, placeholder: 'None' }
+  mood: { label: 'Mood', type: FIELD_TYPE.SELECT, placeholder: 'None' },
+  tags: { label: 'Tags', type: FIELD_TYPE.TAGS }
 }
-const { trackNumber, trackName, description, genre, duration, restriction, scale, mood } = fields
+const { trackNumber, trackName, description, genre, duration, restriction, scale, mood, tags } = fields
 
 const defaultValues = {
   trackNumber: 0,
@@ -92,7 +97,8 @@ const defaultValues = {
   style: 'Vocal',
   duration: 60,
   restriction: 'Unrated',
-  scale: 'Other'
+  scale: 'Other',
+  tags: ['song']
 }
 
 const defaultErrors = {
@@ -266,6 +272,24 @@ describe('interactions', () => {
     it('selects additional values in multiple selection select-box', () => {
       getFormField(genre).then(setMultiselectValue(['Classical'], { append: true }))
       expectFormFieldValue({ ...genre, value: ['Rock', 'Metal', 'Classical'] })
+    })
+  })
+
+  describe('setTagsValue', () => {
+    const newTags = ['melodic', 'brainworm']
+
+    it('sets tags-style select-box values', () => {
+      getFormField(tags).then(setTagsValue(newTags))
+      expectFormFieldValue({ ...tags, value: newTags })
+    })
+
+    it('clears tags-style select-box values', () => {
+      getFormField(tags).then(setTagsValue())
+      expectFormFieldValue({ ...tags, value: [] })
+    })
+
+    it('adds additional values to tags-style select-box', () => {
+      getFormField(tags).then(setTagsValue([...defaultValues.tags, ...newTags]))
     })
   })
 

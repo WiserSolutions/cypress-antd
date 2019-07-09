@@ -200,7 +200,7 @@ export const setTagsValue = (values = [], { append, ...options } = {}) => $el =>
   if (!append) clearMultiselect(options)($el)
 
   values.forEach(value =>
-    getFormInput(fieldSelector, options)
+    on($el)
       .find('.ant-select-search__field', options)
       .type(`${value}{enter}`)
   )
