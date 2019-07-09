@@ -18,6 +18,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
           paths:
             - node_modules
+            - /root/.cache/Cypress
 
       - run: npm run lint
       - run: npm test
