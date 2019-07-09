@@ -6,8 +6,8 @@ export const MUTE = { log: false }
 
 const mute = options => Object.assign({}, options, MUTE)
 
-function log(name, message = '', options = { log: true }) {
-  if (options.log) {
+function log(name, message = '', { log: shouldLog = true } = {}) {
+  if (shouldLog) {
     cy.wrap({ name, displayName: snakeCase(name), message }, MUTE).then(Cypress.log)
   }
 }
@@ -25,9 +25,9 @@ export const getClock = callback =>
     callback(this.clock)
   })
 
-export const tickIfOnClock = (interval = 100) =>
+export const tickIfOnClock = ({ tickInterval } = {}) =>
   getClock(clock => {
-    if (clock) clock.tick(interval)
+    if (clock) clock.tick(tickInterval)
   })
 
 // endregion
