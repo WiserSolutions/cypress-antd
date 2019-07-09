@@ -13,3 +13,5 @@ node_modules
 .nyc_output
 .coverage-cache
 coverage
+/cypress/screenshots
+/cypress/videos
