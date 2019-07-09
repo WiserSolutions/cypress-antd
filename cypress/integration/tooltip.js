@@ -41,7 +41,7 @@ describe('expectTooltip', () => {
   })
 })
 
-describe('haveTooltip', () => {
+describe('shouldHaveTooltip', () => {
   it('checks that an element has a tooltip', () => {
     renderTooltips()
     cy.get('button')
