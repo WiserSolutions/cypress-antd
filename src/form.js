@@ -254,7 +254,9 @@ export function setFormFieldValue({ label, type = FIELD_TYPE.INPUT, value, ...op
 
 export const setFormFieldValues = (fields, { values, ...options } = {}) => {
   const mergedFields = mergeFields(fields, { value: values })
-  forEach(mergedFields, field => setFormFieldValue({ ...options, ...field }))
+  forEach(mergedFields, field => {
+    if (!isUndefined(field.value)) setFormFieldValue({ ...options, ...field })
+  })
 }
 
 // endregion
