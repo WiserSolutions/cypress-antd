@@ -1,4 +1,5 @@
-import { mapValues, pick } from 'lodash'
+import mapValues from 'lodash/mapValues'
+import pick from 'lodash/pick'
 
 import { render } from '../commands'
 import {

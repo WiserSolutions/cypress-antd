@@ -1,4 +1,5 @@
-import { pick, omit } from 'lodash'
+import pick from 'lodash/pick'
+import omit from 'lodash/omit'
 
 import * as commands from './index'
 

@@ -26,7 +26,6 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@wisersolutions/cypress-without": "^1.1.0",
     "@wisersolutions/eslint-config": "^1.0.4",
     "@wisersolutions/eslint-formatter-idea": "^1.0.3",
     "@wisersolutions/transpile-js": "^0.0.3",
@@ -37,12 +36,13 @@
     "eslint-config-prettier": "^3.6.0",
     "eslint-plugin-cypress": "^2.2.1",
     "eslint-plugin-react": "^7.13.0",
-    "lodash": "^4.17.11",
     "prettier": "^1.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5"
+    "@babel/runtime": "^7.4.5",
+    "@wisersolutions/cypress-without": "^1.1.0",
+    "lodash": "^4.17.11"
   }
 }

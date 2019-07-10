@@ -1,4 +1,7 @@
-import { isUndefined, isNumber, isNil, get } from 'lodash'
+import isUndefined from 'lodash/isUndefined'
+import isNumber from 'lodash/isNumber'
+import isNil from 'lodash/isNil'
+import get from 'lodash/get'
 
 import { logAndMute } from './utils'
 import { absoluteRoot } from '@wisersolutions/cypress-without'

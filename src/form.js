@@ -1,4 +1,12 @@
-import { forEach, isEmpty, isUndefined, merge, isArray, mapValues, map, isNumber, isObject } from 'lodash'
+import forEach from 'lodash/forEach'
+import isEmpty from 'lodash/isEmpty'
+import isUndefined from 'lodash/isUndefined'
+import merge from 'lodash/merge'
+import isArray from 'lodash/isArray'
+import mapValues from 'lodash/mapValues'
+import map from 'lodash/map'
+import isNumber from 'lodash/isNumber'
+import isObject from 'lodash/isObject'
 
 import { logAndMute, MUTE, tickIfOnClock } from './utils'
 import { absoluteRoot } from '@wisersolutions/cypress-without'
