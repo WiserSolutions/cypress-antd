@@ -14,9 +14,9 @@ describe('getMessage', () => {
 
   it('finds a specific type of message', () => {
     renderMessage('We come in warts!')
-    getMessage(MESSAGE_TYPE.WARNING).should('not.exist')
+    getMessage({ type: MESSAGE_TYPE.WARNING }).should('not.exist')
     renderMessage('Surrender all cake!', 'warn')
-    getMessage(MESSAGE_TYPE.WARNING).should('have.text', 'Surrender all cake!')
+    getMessage({ type: MESSAGE_TYPE.WARNING }).should('have.text', 'Surrender all cake!')
   })
 })
 
@@ -24,7 +24,7 @@ describe('expectMessage', () => {
   it('expects a specific message', () => {
     renderMessage('Looking for Waldo…', 'loading')
     expectMessage('Looking for Waldo…')
-    expectMessage('Looking for Waldo…', MESSAGE_TYPE.LOADING)
+    expectMessage('Looking for Waldo…', { type: MESSAGE_TYPE.LOADING })
   })
 })
 
