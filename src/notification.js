@@ -1,3 +1,4 @@
+import { absoluteRoot } from '@wisersolutions/cypress-without'
 import { logAndMute } from './utils'
 
 export const getNotification = ({ title, body, ...options } = {}) => {
@@ -12,7 +13,7 @@ export const getNotification = ({ title, body, ...options } = {}) => {
     options
   )
   const { $ } = Cypress
-  return cy.root(opts).then(root =>
+  return absoluteRoot(opts).then(root =>
     $(root)
       .find('.ant-notification-notice:visible')
       .filter((idx, el) => {
