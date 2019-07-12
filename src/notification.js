@@ -20,8 +20,8 @@ export const expectNotification = ({ title, body, ...options } = {}) => {
   const opts = logAndMute('expectNotification', JSON.stringify(pickBy({ title, body }, Boolean)), options)
   getNotification(options).should('exist')
   if (title) {
-    const title = getNotificationTitle({ text: title, ...opts }).should('exist')
-    if (body) title.next(opts).should('have.text', body)
+    const titleChain = getNotificationTitle({ text: title, ...opts }).should('exist')
+    if (body) titleChain.next(opts).should('have.text', body)
   } else if (body) {
     getNotificationBody({ text: body, ...opts }).should('exist')
   }
