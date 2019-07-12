@@ -1,41 +1,28 @@
 import { absoluteRoot } from '@wisersolutions/cypress-without'
+import pickBy from 'lodash/pickBy'
+
 import { logAndMute } from './utils'
 
-export const getNotification = ({ title, body, ...options } = {}) => {
-  const opts = logAndMute(
-    'getNotification',
-    title || body
-      ? [['title', title], ['body', body]]
-          .filter(([, value]) => value)
-          .map(([key, value]) => `${key}: ${value}`)
-          .join(', ')
-      : '',
-    options
-  )
-  const { $ } = Cypress
-  return absoluteRoot(opts).then(root =>
-    $(root)
-      .find('.ant-notification-notice:visible')
-      .filter((idx, el) => {
-        if (title) {
-          const actualTitle = $(el)
-            .find('.ant-notification-notice-message')
-            .text()
-          if (actualTitle !== title) return false
-        }
-        if (body) {
-          const actualBody = $(el)
-            .find('.ant-notification-notice-description')
-            .text()
-          if (actualBody !== body) return false
-        }
-        return true
-      })
-  )
+const find = (selector, text, options) => (text ? cy.contains(selector, text, options) : cy.get(selector, options))
+
+export const getNotification = options => {
+  const opts = logAndMute('getNotification', '', options)
+  return absoluteRoot(opts).find('.ant-notification-notice:visible')
 }
 
-export const getNotificationTitle = options => getNotification(options).find('.ant-notification-notice-message')
+export const getNotificationTitle = ({ text, ...options } = {}) =>
+  find('.ant-notification-notice:visible .ant-notification-notice-message', text, options)
 
-export const getNotificationBody = options => getNotification(options).find('.ant-notification-notice-description')
+export const getNotificationBody = ({ text, ...options } = {}) =>
+  find('.ant-notification-notice:visible .ant-notification-notice-description', text, options)
 
-export const expectNotification = options => getNotification(options).should('exist')
+export const expectNotification = ({ title, body, ...options } = {}) => {
+  const opts = logAndMute('expectNotification', JSON.stringify(pickBy({ title, body }, Boolean)), options)
+  getNotification(options).should('exist')
+  if (title) {
+    const title = getNotificationTitle({ text: title, ...opts }).should('exist')
+    if (body) title.next(opts).should('have.text', body)
+  } else if (body) {
+    getNotificationBody({ text: body, ...opts }).should('exist')
+  }
+}

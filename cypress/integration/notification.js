@@ -15,47 +15,37 @@ describe('getNotification', () => {
     renderNotification({ title: 'Born to be…', content: '…notified!' })
     getNotification().should('have.text', 'Born to be……notified!')
   })
-
-  it('finds notification by title', () => {
-    renderNotification()
-    getNotification({ title: 'Synergy!' }).should('not.exist')
-    renderNotification({ type: 'success', title: 'Synergy!' })
-    getNotification({ title: 'Synergy!' }).should('exist')
-  })
-
-  it('finds notification by body', () => {
-    renderNotification()
-    getNotification({ body: 'Who needs you?' }).should('not.exist')
-    renderNotification({ type: 'warn', content: 'Who needs you?' })
-    getNotification({ body: 'Who needs you?' }).should('exist')
-  })
-
-  it('finds notification by both title and body', () => {
-    const title = 'Soffit panels, circuit brakers, vacuum cleaners, coffee makers'
-    const body = 'Calculators, generators, matching salt and pepper shakers'
-    renderNotification({ title })
-    renderNotification({ content: body })
-    getNotification({ title, body }).should('not.exist')
-    renderNotification({ title, content: body })
-    getNotification({ title, body }).should('exist')
-  })
 })
 
 describe('getNotificationTitle', () => {
-  it('finds title of specific notification', () => {
+  it('finds title of active notification', () => {
+    getNotificationTitle().should('not.exist')
+    renderNotification({ title: 'Love of My Life' })
+    getNotificationTitle().should('have.text', 'Love of My Life')
+  })
+
+  it('finds notification title with specific text', () => {
     const title = 'Love of my life'
-    const body = "don't leave me"
-    renderNotification({ title, content: body })
-    getNotificationTitle({ body }).should('have.text', title)
+    renderNotification()
+    renderNotification({ title })
+    getNotificationTitle({ text: title }).should('have.text', title)
+    getNotificationTitle({ text: "You've stolen my love" }).should('not.exist')
   })
 })
 
 describe('getNotificationBody', () => {
-  it('finds body of specific notification', () => {
-    const title = 'Unsustainable'
+  it('finds body of active notification', () => {
+    getNotificationBody().should('not.exist')
+    renderNotification({ content: 'Unsustainable' })
+    getNotificationBody().should('have.text', 'Unsustainable')
+  })
+
+  it('finds notification body with specific text', () => {
     const body = 'An economy based on endless growth is'
-    renderNotification({ title, content: body })
-    getNotificationBody({ title }).should('have.text', body)
+    renderNotification()
+    renderNotification({ content: body })
+    getNotificationBody({ text: body }).should('have.text', body)
+    getNotificationBody({ text: 'Unsustainable' }).should('not.exist')
   })
 })
 
