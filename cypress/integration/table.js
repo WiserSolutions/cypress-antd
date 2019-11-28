@@ -52,11 +52,9 @@ const [idLabel, nameLabel, durationLabel] = defaultColumns.map(({ title }) => ti
 
 const renderTable = ({ columns = defaultColumns, rowSelection = { fixed: true } } = {}) =>
   render(({ React, antd: { Table } }) => {
-    const App = () => {
-      return (
-        <Table dataSource={data} columns={columns} rowSelection={rowSelection || null} pagination={false} rowKey="id" />
-      )
-    }
+    const App = () => (
+      <Table dataSource={data} columns={columns} rowSelection={rowSelection || null} pagination={false} rowKey="id" />
+    )
     return <App />
   })
 

@@ -1,11 +1,14 @@
 {
-  "extends": "@wisersolutions",
-  "plugins": ["cypress"],
+  "extends": [
+    "@wisersolutions",
+    "@wisersolutions/eslint-config/react",
+    "@wisersolutions/eslint-config/cypress"
+  ],
   "overrides": [
     {
-      "files": ["src/**/*.js"],
-      "env": {
-        "cypress/globals": true
+      "files": ["./cypress/**/*"],
+      "rules": {
+        "no-sparse-arrays": "off"
       }
     }
   ]

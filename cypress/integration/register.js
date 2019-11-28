@@ -18,6 +18,7 @@ describe('register (alternate entry point)', () => {
             {
               dataIndex: 'name',
               title: 'Name',
+              // eslint-disable-next-line react/display-name
               render: (name, { album }) => (
                 <Tooltip title={album}>
                   <span>{name}</span>

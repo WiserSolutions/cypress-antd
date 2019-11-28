@@ -33,17 +33,16 @@ const getSelectValuePart = (scope, options) => scope.find('.ant-select-selection
 
 export function getFormField({ label, ...options } = {}) {
   const opts = logAndMute('getFormField', label, options)
-  const field = cy.get('.ant-form-item', opts)
-  return isUndefined(label)
-    ? field
-    : field.filter(
-        (idx, el) =>
+  return cy.get('.ant-form-item', opts).then(field =>
+    isUndefined(label)
+      ? field
+      : field.filter((idx, el) =>
           $(el)
             .children('.ant-form-item-label')
             .text()
-            .includes(label),
-        opts
-      )
+            .includes(label)
+        )
+  )
 }
 
 export function getFormInput({ label, type = FIELD_TYPE.INPUT, ...options } = {}) {
