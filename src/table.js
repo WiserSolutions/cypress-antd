@@ -39,11 +39,13 @@ export function getTableRowSelectionHeader(options) {
   return getTable(options).find('.ant-table-thead > tr > th.ant-table-selection-column', options)
 }
 
+export function getTableColumnHeaders(options) {
+  return getTable(options).find('.ant-table-thead > tr > th:not(.ant-table-selection-column)')
+}
+
 export function getTableColumnHeader(columnIdxOrLabel, options) {
   return isNumber(columnIdxOrLabel)
-    ? getTable(options)
-        .find('.ant-table-thead > tr > th')
-        .eq(columnIdxOrLabel)
+    ? getTableColumnHeaders(options).eq(columnIdxOrLabel)
     : getTable(options).contains('.ant-table-thead > tr > th', columnIdxOrLabel, options)
 }
 
@@ -70,10 +72,29 @@ export function getTableRow(rowIdx = 0, options) {
   return getTableRows(options).eq(rowIdx, options)
 }
 
+export function getTableRowSelectionCell(rowIdx = 0, options) {
+  return getTableRow(rowIdx, options).find('td.ant-table-selection-column', options)
+}
+
 export function getTableCell(rowIdx = 0, colIdx = 0, options) {
   return getTableRow(rowIdx, options)
-    .find('td', options)
+    .find('td:not(.ant-table-selection-column)', options)
     .eq(colIdx, options)
+}
+
+export function expectTableColumnCount(count, options) {
+  const opts = logAndMute('expectTableColumnCount', count, options)
+  return getTableColumnHeaders(opts).should('have.length', count)
+}
+
+export function expectTableColumnHeaders(expectedColumnsHeaders, options) {
+  const opts = logAndMute('expectTableColumnHeaders', expectedColumnsHeaders.join(', '), options)
+  getTableColumnHeaders(opts).should(headers =>
+    expectedColumnsHeaders.forEach(
+      (expectedHeader, idx) =>
+        !isUndefined(expectedHeader) && expect(get(headers[idx], 'textContent')).to.equal(expectedHeader)
+    )
+  )
 }
 
 export function expectTableRowCount(count, options) {
@@ -91,7 +112,10 @@ export function expectTableRows(expectedRows, options) {
     expectedRows.forEach((expectedCellValues, rowIdx) =>
       expectedCellValues.forEach(
         (value, cellIdx) =>
-          !isUndefined(value) && expect(get($(rows[rowIdx]).children()[cellIdx], 'textContent')).to.equal(value)
+          !isUndefined(value) &&
+          expect(get($(rows[rowIdx]).children(':not(.ant-table-selection-column)')[cellIdx], 'textContent')).to.equal(
+            value
+          )
       )
     )
   )
@@ -136,7 +160,7 @@ export function filterTableBy(columnIdxOrLabel, values, options) {
 
 export function toggleRowSelection(rowIdx, options) {
   const opts = logAndMute('toggleRowSelection', rowIdx, options)
-  getTableCell(rowIdx, 0, opts)
+  getTableRowSelectionCell(rowIdx, opts)
     .find('input[type=checkbox]', opts)
     .click(opts)
 }

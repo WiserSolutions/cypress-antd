@@ -14,7 +14,10 @@ import {
   toggleRowSelection,
   expectTableRowCount,
   expectTableRows,
-  expectTableSortedBy
+  expectTableSortedBy,
+  getTableColumnHeaders,
+  expectTableColumnCount,
+  expectTableColumnHeaders
 } from '../../src/table'
 
 const data = [
@@ -83,11 +86,25 @@ describe('getTable', () => {
   })
 })
 
+describe('getTableColumnHeaders', () => {
+  it('finds all column headers', () => {
+    renderTable()
+    getTableColumnHeaders().then(headers =>
+      defaultColumns.forEach(({ title }, idx) =>
+        cy
+          .wrap(headers)
+          .eq(idx)
+          .should('have.text', title)
+      )
+    )
+  })
+})
+
 describe('getTableColumnHeader', () => {
   beforeEach(renderTable)
 
   it('finds column header by index', () => {
-    getTableColumnHeader(2).should('have.text', nameLabel)
+    getTableColumnHeader(1).should('have.text', nameLabel)
   })
 
   it('finds column header by label', () => {
@@ -101,8 +118,8 @@ describe('getTableColumnSorter', () => {
   beforeEach(renderTable)
 
   it('finds column sorter by column index', () => {
-    getTableColumnSorter(1).should('not.exist')
-    getTableColumnSorter(2).should('be.visible')
+    getTableColumnSorter(0).should('not.exist')
+    getTableColumnSorter(1).should('be.visible')
   })
 
   it('finds column sorter by column label', () => {
@@ -114,16 +131,16 @@ describe('getTableColumnSorter', () => {
   })
 
   it('finds column sorter for specific sort order', () => {
-    getTableColumnSorter(2).click()
-    getTableColumnSorter(2, { sortOrder: SORT_ORDER.DESCENDING }).should('not.have.class', 'on')
+    getTableColumnSorter(1).click()
+    getTableColumnSorter(1, { sortOrder: SORT_ORDER.DESCENDING }).should('not.have.class', 'on')
   })
 })
 
 describe('getTableFiltersDropdownToggle', () => {
   it('finds column filters drop-down toggle', () => {
     renderTable()
-    getTableFiltersDropdownToggle(3).should('not.exist')
-    getTableFiltersDropdownToggle(2)
+    getTableFiltersDropdownToggle(2).should('not.exist')
+    getTableFiltersDropdownToggle(1)
       .should('be.visible')
       .and('have.class', 'anticon-filter')
   })
@@ -158,11 +175,11 @@ describe('getTableCell', () => {
   beforeEach(renderTable)
 
   it('finds table cell by coordinates', () => {
-    getTableCell(2, 3).should('have.text', data[2].duration)
+    getTableCell(2, 2).should('have.text', data[2].duration)
   })
 
   it('finds fixed column cell by coordinates', () => {
-    getTableCell(4, 1, { fixed: 'left' })
+    getTableCell(4, 0, { fixed: 'left' })
       .should('be.visible')
       .and('have.text', String(data[4].id))
   })
@@ -173,13 +190,13 @@ describe('sortTableBy', () => {
 
   it('sorts table by column', () => {
     sortTableBy(nameLabel)
-    getTableCell(0, 2).should('have.text', 'Apocalypse Please')
+    getTableCell(0, 1).should('have.text', 'Apocalypse Please')
   })
 
   it('sorts in descending order when used a second time', () => {
     sortTableBy(nameLabel)
     sortTableBy(nameLabel)
-    getTableCell(data.length - 1, 2).should('have.text', 'Time Is Running Out')
+    getTableCell(data.length - 1, 1).should('have.text', 'Time Is Running Out')
   })
 })
 
@@ -213,6 +230,25 @@ describe('toggleBulkRowSelection', () => {
   })
 })
 
+describe('expectTableColumnCount', () => {
+  it('expects the table to have a specific number of columns', () => {
+    renderTable()
+    expectTableColumnCount(defaultColumns.length)
+  })
+})
+
+describe('expectTableColumnHeaders', () => {
+  beforeEach(renderTable)
+
+  it('expect the table to have specific column labels', () => {
+    expectTableColumnHeaders(defaultColumns.map(({ title }) => title))
+  })
+
+  it('checks only the provided headers', () => {
+    expectTableColumnHeaders([, defaultColumns[1].title])
+  })
+})
+
 describe('expectTableRowCount', () => {
   it('expects the table to have specific number of rows', () => {
     renderTable()
@@ -228,8 +264,8 @@ describe('expectTableSortedBy', () => {
   })
 
   it('expects the table to be sorted by a specific column', () => {
-    sortTableBy(2)
-    expectTableSortedBy(2)
+    sortTableBy(1)
+    expectTableSortedBy(1)
   })
 
   it('expects descending sort order', () => {
@@ -243,10 +279,10 @@ describe('expectTableRows', () => {
   it('expects specific table content', () => {
     renderTable()
     expectTableRows([
-      [, String(data[0].id), data[0].name, data[0].duration],
-      [, , data[1].name],
+      [String(data[0].id), data[0].name, data[0].duration],
+      [, data[1].name],
       [],
-      [, , , data[3].duration]
+      [, , data[3].duration]
     ])
   })
 })
