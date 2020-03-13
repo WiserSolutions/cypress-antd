@@ -201,22 +201,27 @@ export const clearMultiselect = options => $el =>
     }
   })
 
+export const closeMultiselectOptions = options => $el => getSelectSearchPart(on($el), options).type('{esc}')
+
 export const setMultiselectValue = (values = [], { append, ...options } = {}) => $el => {
   if (!append) clearMultiselect(options)($el)
 
   getSelectValuePart(on($el), options).click(options)
   values.forEach(value => chooseSelectDropdownOption(value, options))
-  getSelectSearchPart(on($el), options).type('{esc}')
-  expectSelectDropdownToClose(options)
+  closeMultiselectOptions(options)($el)
 
   tickIfOnClock(options)
+  expectSelectDropdownToClose(options)
 }
 
 export const setTagsValue = (values = [], { append, ...options } = {}) => $el => {
   if (!append) clearMultiselect(options)($el)
 
-  values.forEach(value => getSelectSearchPart(on($el)).type(`${value}{enter}`))
+  values.forEach(value => getSelectSearchPart(on($el), options).type(`${value}{enter}`))
+  closeMultiselectOptions(options)($el)
+
   tickIfOnClock(options)
+  expectSelectDropdownToClose(options)
 }
 
 export const setRadioValue = (value, options) => $el =>
