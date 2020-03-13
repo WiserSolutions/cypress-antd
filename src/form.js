@@ -30,6 +30,7 @@ const unsupportedFieldType = type => new Error(`Field type "${type}" is not supp
 // region:Selection
 
 const getSelectValuePart = (scope, options) => scope.find('.ant-select-selection__rendered', options)
+const getSelectSearchPart = (scope, options) => scope.find('.ant-select-search__field', options)
 
 export function getFormField({ label, ...options } = {}) {
   const opts = logAndMute('getFormField', label, options)
@@ -205,17 +206,16 @@ export const setMultiselectValue = (values = [], { append, ...options } = {}) =>
 
   getSelectValuePart(on($el), options).click(options)
   values.forEach(value => chooseSelectDropdownOption(value, options))
+  getSelectSearchPart(on($el), options).type('{esc}')
+  expectSelectDropdownToClose(options)
+
   tickIfOnClock(options)
 }
 
 export const setTagsValue = (values = [], { append, ...options } = {}) => $el => {
   if (!append) clearMultiselect(options)($el)
 
-  values.forEach(value =>
-    on($el)
-      .find('.ant-select-search__field', options)
-      .type(`${value}{enter}`)
-  )
+  values.forEach(value => getSelectSearchPart(on($el)).type(`${value}{enter}`))
   tickIfOnClock(options)
 }
 
