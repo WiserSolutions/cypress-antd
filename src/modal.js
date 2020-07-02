@@ -2,7 +2,7 @@ import { absoluteRoot } from '@wisersolutions/cypress-without'
 
 import { logAndMute } from './utils'
 
-export const getModalMask = options => absoluteRoot().find('.ant-modal-mask:visible', options)
+export const getModalMask = options => absoluteRoot().find('.ant-modal-mask:not(.ant-modal-mask-hidden)', options)
 
 export const getModal = options => absoluteRoot().find('.ant-modal:visible', options)
 
