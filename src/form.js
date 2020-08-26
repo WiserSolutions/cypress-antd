@@ -37,11 +37,11 @@ export function getFormField({ label, ...options } = {}) {
   return cy.get('.ant-form-item', opts).then(field =>
     isUndefined(label)
       ? field
-      : field.filter((idx, el) =>
-          $(el)
-            .children('.ant-form-item-label')
-            .text()
-            .includes(label)
+      : field.filter(
+          (idx, el) =>
+            $(el)
+              .children('.ant-form-item-label')
+              .text() === label
         )
   )
 }

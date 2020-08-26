@@ -26,7 +26,7 @@ const renderForm = () =>
       <Form.Item label="Track Number" validateStatus="error" help="That's not a valid track number!">
         <InputNumber defaultValue={0} />
       </Form.Item>
-      <Form.Item label="Track Name">
+      <Form.Item label="Track">
         <Input defaultValue="Unnamed" />
       </Form.Item>
       <Form.Item label="Description">
@@ -79,7 +79,7 @@ const renderForm = () =>
 
 const fields = {
   trackNumber: { label: 'Track Number', type: FIELD_TYPE.NUMBER_INPUT },
-  trackName: { label: 'Track Name' },
+  trackName: { label: 'Track' },
   description: { label: 'Description', placeholder: 'Describe the track in your own terms.' },
   genre: { label: 'Genre', type: FIELD_TYPE.MULTISELECT },
   style: { label: 'Style', type: FIELD_TYPE.RADIO },
@@ -118,11 +118,14 @@ describe('selectors', () => {
     it('finds all form fields', () => {
       getFormField()
         .eq(1)
-        .should('have.text', 'Track Name')
+        .should('have.text', 'Track')
     })
 
     it('finds form field by label', () => {
-      getFormField(trackName).should('be.visible')
+      getFormField(trackName)
+        .should('be.visible')
+        .and('have.length', 1)
+        .and('have.text', 'Track')
       getFormField({ label: 'Non-existent Field' }).should('not.exist')
     })
   })
