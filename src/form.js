@@ -72,14 +72,14 @@ export const expectSelectValue = (expectedValue, options) => $el => {
   const opts = logAndMute('expectSelectValue', expectedValue, options)
   on($el)
     .find('.ant-select-selection-selected-value', opts)
-    .should(...(expectedValue ? ['have.text', expectedValue] : ['not.be.visible']))
+    .should(...(expectedValue ? ['have.text', expectedValue] : ['not.exist']))
 }
 
 export const expectSelectPlaceholder = (expectedPlaceholder, options) => $el => {
   const opts = logAndMute('expectSelectPlaceholder', expectedPlaceholder, options)
   on($el)
     .find('.ant-select-selection__placeholder', opts)
-    .should(...(expectedPlaceholder ? ['have.text', expectedPlaceholder] : ['not.be.visible']))
+    .should(...(expectedPlaceholder ? ['have.text', expectedPlaceholder] : ['not.exist']))
 }
 
 export function expectFormFieldValue({
