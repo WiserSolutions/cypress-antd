@@ -13,4 +13,7 @@ export const closeDrawer = options =>
 export const expectDrawerTitle = expectedText => getDrawerTitle().should('have.text', expectedText)
 
 export const expectDrawerToOpen = () => getDrawer().should('exist')
-export const expectDrawerToClose = () => getDrawer().should('not.exist')
+export const expectDrawerToClose = () =>
+  absoluteRoot()
+    .find('.ant-drawer')
+    .should('not.be.visible')
