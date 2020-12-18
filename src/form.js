@@ -234,6 +234,8 @@ export function setFormFieldValue({ label, type = FIELD_TYPE.INPUT, value, ...op
   const getField = () => getFormField({ label, ...opts })
   const getInput = () => getFormInput({ label, type, ...opts })
 
+  getField().scrollIntoView()
+
   switch (type) {
     case INPUT:
     case NUMBER_INPUT:
