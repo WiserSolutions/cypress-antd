@@ -1,7 +1,5 @@
 import { absoluteRoot } from '@wisersolutions/cypress-without'
 
-import { expectVisibleText } from './utils'
-
 export const getDrawer = options => absoluteRoot(options).find('.ant-drawer:visible', options)
 export const getDrawerTitle = options => getDrawer(options).find('.ant-drawer-title', options)
 
