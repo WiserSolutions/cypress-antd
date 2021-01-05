@@ -182,6 +182,7 @@ export const setInputValue = (value, { append, ...options } = {}) => $el => {
 export const setSelectValue = (value, options) => $el => {
   if (value) {
     getSelectValuePart(on($el), options).click(options)
+    tickIfOnClock(options)
     chooseSelectDropdownOption(value, options)
     tickIfOnClock(options)
     expectSelectDropdownToClose(options)
