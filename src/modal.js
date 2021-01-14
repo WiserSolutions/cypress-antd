@@ -2,8 +2,6 @@ import { absoluteRoot } from '@wisersolutions/cypress-without'
 
 import { logAndMute } from './utils'
 
-export const getModalMask = options => absoluteRoot().find('.ant-modal-mask:not(.ant-modal-mask-hidden)', options)
-
 export const getModal = options => absoluteRoot().find('.ant-modal:visible', options)
 
 export const getModalTitle = options => getModal(options).find('.ant-modal-title', options)
@@ -51,8 +49,12 @@ export function expectModalConfirmActions(labels, options) {
 export const expectModalToOpen = options => getModal(options).should('exist')
 
 export const expectModalToClose = options => {
-  getModalMask(options).should('not.exist')
-  return getModal(options).should('not.exist')
+  absoluteRoot()
+    .find('.ant-modal-mask:not(.ant-modal-mask-hidden)', options)
+    .should('not.exist')
+  absoluteRoot()
+    .find('.ant-modal', options)
+    .should('not.be.visible')
 }
 
 export const closeModal = options =>
