@@ -75,6 +75,14 @@ export const expectSelectValue = (expectedValue, options) => $el => {
     .should(...(expectedValue ? ['have.text', expectedValue] : ['not.exist']))
 }
 
+export const expectMultiSelectValue = (expectedValues, options) => $el => {
+  expectedValues.forEach(val =>
+    on($el)
+      .contains('.ant-select-selection__choice__content', val, options)
+      .should('be.visible')
+  )
+}
+
 export const expectSelectPlaceholder = (expectedPlaceholder, options) => $el => {
   const opts = logAndMute('expectSelectPlaceholder', expectedPlaceholder, options)
   on($el)
@@ -113,12 +121,7 @@ export function expectFormFieldValue({
     case MULTISELECT:
     case TAGS:
       if (shouldExpectPlaceholder) getInput().then(expectSelectPlaceholder(placeholder, opts))
-      if (shouldExpectValue)
-        value.forEach(val =>
-          getInput()
-            .contains('.ant-select-selection__choice__content', val, opts)
-            .should('be.visible')
-        )
+      if (shouldExpectValue) getInput().then(expectMultiSelectValue(value, opts))
       return
     case RADIO:
       getInput()
