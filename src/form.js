@@ -167,13 +167,13 @@ export function expectFormFields(fields, { values, errors, ...options } = {}) {
 export function chooseSelectDropdownOption(value, options) {
   const opts = logAndMute('chooseSelectOption', value, options)
   absoluteRoot(opts)
-    .contains('.ant-select-dropdown:visible .ant-select-dropdown-menu-item', value, opts)
+    .contains('.ant-select-dropdown:not(.ant-select-dropdown-hidden) .ant-select-dropdown-menu-item', value, opts)
     .click(opts)
 }
 
 export function expectSelectDropdownToClose(options) {
   absoluteRoot(options)
-    .find('.ant-select-dropdown:visible', options)
+    .find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)', options)
     .should('not.exist')
 }
 

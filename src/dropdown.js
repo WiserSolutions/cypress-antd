@@ -2,7 +2,7 @@ import { absoluteRoot } from '@wisersolutions/cypress-without'
 
 import { logAndMute, triggerAliased } from './utils'
 
-export const getDropdown = options => absoluteRoot(options).find('.ant-dropdown:visible', options)
+export const getDropdown = options => absoluteRoot(options).find('.ant-dropdown:not(.ant-dropdown-hidden)', options)
 
 export const getDropdownItem = (label, options) =>
   getDropdown(options).contains('.ant-dropdown-menu-item', label, options)
