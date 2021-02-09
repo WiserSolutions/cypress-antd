@@ -8,7 +8,7 @@ export const getDropdownItem = (label, options) =>
   getDropdown(options).contains('.ant-dropdown-menu-item', label, options)
 
 export const selectDropdownItem = (label, options) =>
-  getDropdownItem(label, logAndMute('selectDropdownItem', label, options)).click()
+  getDropdownItem(label, logAndMute('selectDropdownItem', label, options)).click(options)
 
 export const openDropdown = triggerAliased('openDropdown', 'mouseover')
 
