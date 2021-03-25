@@ -6,6 +6,9 @@
     "type": "git",
     "url": "git+https://github.com/WiserSolutions/cypress-antd"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "author": "Wiser Solutions, Inc.",
   "contributors": [
     "Jan Konopásek"
@@ -26,9 +29,9 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@wisersolutions/eslint-config": "^2.0.1",
-    "@wisersolutions/eslint-formatter-idea": "^1.0.5",
-    "@wisersolutions/transpile-js": "^0.0.17",
+    "@wisersolutions/eslint-config": "^2.0.6",
+    "@wisersolutions/eslint-formatter-idea": "^1.0.8",
+    "@wisersolutions/transpile-js": "^0.0.19",
     "antd": "^3.25.3",
     "babel-eslint": "^10.0.3",
     "cypress": "^6.1.0",
@@ -42,7 +45,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.4",
-    "@wisersolutions/cypress-without": "^1.1.5",
+    "@wisersolutions/cypress-without": "^1.1.6",
     "lodash": "^4.17.15"
   }
 }
