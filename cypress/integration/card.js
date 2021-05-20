@@ -25,8 +25,6 @@ describe('getCardContent', () => {
 describe('getCardActions', () => {
   it('finds extra `Card` content, usually actions', () => {
     renderCard({ extra: 'Wait for the Sun' })
-    getCardActions()
-      .find('button')
-      .should('have.text', 'Wait for the Sun')
+    getCardActions().find('button').should('have.text', 'Wait for the Sun')
   })
 })

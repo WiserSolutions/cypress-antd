@@ -77,9 +77,7 @@ export function getTableRowSelectionCell(rowIdx = 0, options) {
 }
 
 export function getTableCell(rowIdx = 0, colIdx = 0, options) {
-  return getTableRow(rowIdx, options)
-    .find('td:not(.ant-table-selection-column)', options)
-    .eq(colIdx, options)
+  return getTableRow(rowIdx, options).find('td:not(.ant-table-selection-column)', options).eq(colIdx, options)
 }
 
 export function expectTableColumnCount(count, options) {
@@ -141,9 +139,7 @@ export function expectTableSortedBy(columnIdxOrLabel, options = {}) {
  */
 export function sortTableBy(columnIdxOrLabel, options) {
   const opts = logAndMute('sortTableBy', columnIdxOrLabel, options)
-  getTableColumnHeader(columnIdxOrLabel, opts)
-    .find('.ant-table-column-sorters', opts)
-    .click(opts)
+  getTableColumnHeader(columnIdxOrLabel, opts).find('.ant-table-column-sorters', opts).click(opts)
 }
 
 export function filterTableBy(columnIdxOrLabel, values, options) {
@@ -160,14 +156,10 @@ export function filterTableBy(columnIdxOrLabel, values, options) {
 
 export function toggleRowSelection(rowIdx, options) {
   const opts = logAndMute('toggleRowSelection', rowIdx, options)
-  getTableRowSelectionCell(rowIdx, opts)
-    .find('input[type=checkbox]', opts)
-    .click(opts)
+  getTableRowSelectionCell(rowIdx, opts).find('input[type=checkbox]', opts).click(opts)
 }
 
 export function toggleBulkRowSelection(options) {
   const opts = logAndMute('toggleBulkSelection', undefined, options)
-  getTableRowSelectionHeader(opts)
-    .find('input[type=checkbox]', opts)
-    .click(opts)
+  getTableRowSelectionHeader(opts).find('input[type=checkbox]', opts).click(opts)
 }

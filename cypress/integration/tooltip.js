@@ -12,7 +12,7 @@ const renderTooltips = () =>
       </Tooltip>
     </>
   ))
-const hover = (icon) => cy.get(`.anticon-${icon}`).closest('button').trigger('mouseover')
+const hover = icon => cy.get(`.anticon-${icon}`).closest('button').trigger('mouseover')
 
 describe('getTooltip', () => {
   it('gets visible tooltip', () => {

@@ -34,16 +34,11 @@ const getSelectSearchPart = (scope, options) => scope.find('.ant-select-search__
 
 export function getFormField({ label, ...options } = {}) {
   const opts = logAndMute('getFormField', label, options)
-  return cy.get('.ant-form-item', opts).then(field =>
-    isUndefined(label)
-      ? field
-      : field.filter(
-          (idx, el) =>
-            $(el)
-              .children('.ant-form-item-label')
-              .text() === label
-        )
-  )
+  return cy
+    .get('.ant-form-item', opts)
+    .then(field =>
+      isUndefined(label) ? field : field.filter((idx, el) => $(el).children('.ant-form-item-label').text() === label)
+    )
 }
 
 export function getFormInput({ label, type = FIELD_TYPE.INPUT, ...options } = {}) {
@@ -77,9 +72,7 @@ export const expectSelectValue = (expectedValue, options) => $el => {
 
 export const expectMultiSelectValue = (expectedValues, options) => $el => {
   expectedValues.forEach(val =>
-    on($el)
-      .contains('.ant-select-selection__choice__content', val, options)
-      .should('be.visible')
+    on($el).contains('.ant-select-selection__choice__content', val, options).should('be.visible')
   )
 }
 
@@ -124,9 +117,7 @@ export function expectFormFieldValue({
       if (shouldExpectValue) getInput().then(expectMultiSelectValue(value, opts))
       return
     case RADIO:
-      getInput()
-        .contains('.ant-radio-wrapper', value, opts)
-        .should('have.class', 'ant-radio-wrapper-checked')
+      getInput().contains('.ant-radio-wrapper', value, opts).should('have.class', 'ant-radio-wrapper-checked')
       return
     default:
       throw unsupportedFieldType(type)
@@ -172,9 +163,7 @@ export function chooseSelectDropdownOption(value, options) {
 }
 
 export function expectSelectDropdownToClose(options) {
-  absoluteRoot(options)
-    .find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)', options)
-    .should('not.exist')
+  absoluteRoot(options).find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)', options).should('not.exist')
 }
 
 export const setInputValue = (value, { append, ...options } = {}) => $el => {
@@ -190,9 +179,7 @@ export const setSelectValue = (value, options) => $el => {
     tickIfOnClock(options)
     expectSelectDropdownToClose(options)
   } else {
-    on($el)
-      .find('.ant-select-selection__clear', options)
-      .click(options)
+    on($el).find('.ant-select-selection__clear', options).click(options)
   }
   return on($el)
 }
@@ -229,9 +216,7 @@ export const setTagsValue = (values = [], { append, ...options } = {}) => $el =>
 }
 
 export const setRadioValue = (value, options) => $el =>
-  on($el)
-    .contains('.ant-radio-wrapper', value, options)
-    .click(options)
+  on($el).contains('.ant-radio-wrapper', value, options).click(options)
 
 export function setFormFieldValue({ label, type = FIELD_TYPE.INPUT, value, ...options }) {
   const opts = logAndMute('setFieldValue', `${label}: ${value}`, options)

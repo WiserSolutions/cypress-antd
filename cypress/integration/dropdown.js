@@ -5,7 +5,7 @@ import {
   closeDropdown,
   getDropdown,
   expectDropdownToOpen,
-  expectDropdownToClose,
+  expectDropdownToClose
 } from '../../src/dropdown'
 import { getButton } from '../../src/button'
 

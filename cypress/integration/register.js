@@ -1,18 +1,17 @@
 import { render } from '../commands'
 import '../../src/register'
-import { PlusOutlined } from '@ant-design/icons'
 
 // tests just a few selected commands to verify the integrity of registration logic
 describe('register (alternate entry point)', () => {
   it('registers parent commands', () => {
-    render(({ React, antd: { Button, Card, Table, Tooltip }, icons: { PlusOutlined } }) => (
+    render(({ React, antd: { Button, Card, Table, Tooltip } }) => (
       <Card title="Queen Singles" extra={<Button>Like Them!</Button>}>
         <Table
           dataSource={[
             { id: 1, name: "Now I'm Here", album: 'Sheer Heart Attack', duration: '4:12' },
             { id: 2, name: 'Bohemian Rhapsody', album: 'A Night at the Opera', duration: '5:55' },
             { id: 3, name: 'Bicycle Race', album: 'Jazz', duration: '3:01' },
-            { id: 4, name: "Don't Stop Me Now", album: 'Jazz', duration: '3:29' },
+            { id: 4, name: "Don't Stop Me Now", album: 'Jazz', duration: '3:29' }
           ]}
           columns={[
             { dataIndex: 'id', title: 'ID' },
@@ -24,9 +23,9 @@ describe('register (alternate entry point)', () => {
                 <Tooltip title={album}>
                   <span>{name}</span>
                 </Tooltip>
-              ),
+              )
             },
-            { dataIndex: 'duration', title: 'Duration' },
+            { dataIndex: 'duration', title: 'Duration' }
           ]}
           rowKey="id"
           pagination={false}
@@ -42,7 +41,7 @@ describe('register (alternate entry point)', () => {
   })
 
   it.only('registers child commands', () => {
-    render(({ React, antd: { Form, Input, Tooltip, Button, Dropdown, Menu, Radio } }) => (
+    render(({ React, antd: { Form, Input, Tooltip, Button, Dropdown, Menu, Radio }, icons: { PlusOutlined } }) => (
       <Form>
         <Form.Item
           label={

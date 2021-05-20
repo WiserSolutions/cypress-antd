@@ -66,23 +66,17 @@ const getSelectedTableRows = options => getTableRows(options).filter('.ant-table
 describe('getTable', () => {
   it('finds a simple table', () => {
     renderTable({ columns: defaultColumns.slice(1), rowSelection: false })
-    getTable({ scroll: false })
-      .find('tbody > tr:first-child > td:first-child')
-      .should('have.text', data[0].name)
+    getTable({ scroll: false }).find('tbody > tr:first-child > td:first-child').should('have.text', data[0].name)
   })
 
   it('finds the main body of a scrolling table', () => {
     renderTable()
-    getTable()
-      .find('tbody > tr:first-child > td:nth-child(3)')
-      .should('have.text', data[0].name)
+    getTable().find('tbody > tr:first-child > td:nth-child(3)').should('have.text', data[0].name)
   })
 
   it('finds left-fixed columns table part', () => {
     renderTable()
-    getTable({ fixed: 'left' })
-      .find('tbody > tr:first-child > td:nth-child(2)')
-      .should('have.text', String(data[0].id))
+    getTable({ fixed: 'left' }).find('tbody > tr:first-child > td:nth-child(2)').should('have.text', String(data[0].id))
   })
 })
 
@@ -90,12 +84,7 @@ describe('getTableColumnHeaders', () => {
   it('finds all column headers', () => {
     renderTable()
     getTableColumnHeaders().then(headers =>
-      defaultColumns.forEach(({ title }, idx) =>
-        cy
-          .wrap(headers)
-          .eq(idx)
-          .should('have.text', title)
-      )
+      defaultColumns.forEach(({ title }, idx) => cy.wrap(headers).eq(idx).should('have.text', title))
     )
   })
 })
@@ -108,9 +97,7 @@ describe('getTableColumnHeader', () => {
   })
 
   it('finds column header by label', () => {
-    getTableColumnHeader(durationLabel)
-      .filter(':nth-child(4)')
-      .should('be.visible')
+    getTableColumnHeader(durationLabel).filter(':nth-child(4)').should('be.visible')
   })
 })
 
@@ -124,10 +111,7 @@ describe('getTableColumnSorter', () => {
 
   it('finds column sorter by column label', () => {
     getTableColumnSorter(idLabel, { fixed: 'left' }).should('not.exist')
-    getTableColumnSorter(nameLabel)
-      .should('be.visible')
-      .click()
-      .should('have.class', 'on')
+    getTableColumnSorter(nameLabel).should('be.visible').click().should('have.class', 'on')
   })
 
   it('finds column sorter for specific sort order', () => {
@@ -140,9 +124,7 @@ describe('getTableFiltersDropdownToggle', () => {
   it('finds column filters drop-down toggle', () => {
     renderTable()
     getTableFiltersDropdownToggle(2).should('not.exist')
-    getTableFiltersDropdownToggle(1)
-      .should('be.visible')
-      .and('have.class', 'anticon-filter')
+    getTableFiltersDropdownToggle(1).should('be.visible').and('have.class', 'anticon-filter')
   })
 })
 
@@ -179,9 +161,7 @@ describe('getTableCell', () => {
   })
 
   it('finds fixed column cell by coordinates', () => {
-    getTableCell(4, 0, { fixed: 'left' })
-      .should('be.visible')
-      .and('have.text', String(data[4].id))
+    getTableCell(4, 0, { fixed: 'left' }).should('be.visible').and('have.text', String(data[4].id))
   })
 })
 
@@ -214,9 +194,7 @@ describe('toggleRowSelection', () => {
   it('toggles row selection', () => {
     renderTable()
     toggleRowSelection(7, { fixed: true })
-    getSelectedTableRows()
-      .find('td:nth-child(3)')
-      .should('have.text', data[7].name)
+    getSelectedTableRows().find('td:nth-child(3)').should('have.text', data[7].name)
   })
 })
 

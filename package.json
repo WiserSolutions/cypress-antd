@@ -30,9 +30,9 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@wisersolutions/eslint-config": "^2.0.1",
-    "@wisersolutions/eslint-formatter-idea": "^1.0.7",
-    "@wisersolutions/transpile-js": "^0.0.18",
+    "@wisersolutions/eslint-config": "^2.1.0",
+    "@wisersolutions/eslint-formatter-idea": "^1.0.8",
+    "@wisersolutions/transpile-js": "^0.1.0",
     "antd": "^4.15.6",
     "babel-eslint": "^10.1.0",
     "cypress": "^7.3.0",

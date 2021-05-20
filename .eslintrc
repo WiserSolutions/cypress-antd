@@ -8,7 +8,8 @@
     {
       "files": ["./cypress/**/*"],
       "rules": {
-        "no-sparse-arrays": "off"
+        "no-sparse-arrays": "off",
+        "react/jsx-uses-react": "error" // React is injected at runtime, needs to be defined still
       }
     }
   ]
