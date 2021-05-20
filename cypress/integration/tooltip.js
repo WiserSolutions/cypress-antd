@@ -2,21 +2,17 @@ import { render } from '../commands'
 import { getTooltip, expectTooltip, shouldHaveTooltip } from '../../src/tooltip'
 
 const renderTooltips = () =>
-  render(({ React, antd: { Tooltip, Button } }) => (
+  render(({ React, antd: { Tooltip, Button }, icons: { UserOutlined, SettingOutlined } }) => (
     <>
       <Tooltip title="User Profile" placement="bottomLeft">
-        <Button icon="user" />
+        <Button icon={<UserOutlined />} />
       </Tooltip>
       <Tooltip title="Settings" placement="bottomLeft">
-        <Button icon="setting" />
+        <Button icon={<SettingOutlined />} />
       </Tooltip>
     </>
   ))
-const hover = icon =>
-  cy
-    .get(`.anticon-${icon}`)
-    .closest('button')
-    .trigger('mouseover')
+const hover = (icon) => cy.get(`.anticon-${icon}`).closest('button').trigger('mouseover')
 
 describe('getTooltip', () => {
   it('gets visible tooltip', () => {
@@ -44,9 +40,7 @@ describe('expectTooltip', () => {
 describe('shouldHaveTooltip', () => {
   it('checks that an element has a tooltip', () => {
     renderTooltips()
-    cy.get('button')
-      .eq(1)
-      .then(shouldHaveTooltip('Settings'))
+    cy.get('button').eq(1).then(shouldHaveTooltip('Settings'))
   })
 })
 

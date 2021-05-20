@@ -5,12 +5,12 @@ import {
   closeDropdown,
   getDropdown,
   expectDropdownToOpen,
-  expectDropdownToClose
+  expectDropdownToClose,
 } from '../../src/dropdown'
 import { getButton } from '../../src/button'
 
 const renderDropdown = () =>
-  render(({ React, antd: { Dropdown, Menu, Button, Icon } }) => {
+  render(({ React, antd: { Dropdown, Menu, Button }, icons: { DownOutlined } }) => {
     const App = () => {
       const [lastSelectedItem, setLastSelectedItem] = React.useState(null)
       return (
@@ -24,7 +24,7 @@ const renderDropdown = () =>
             }
           >
             <Button>
-              Hover Me <Icon type="down" />
+              Hover Me <DownOutlined />
             </Button>
           </Dropdown>
           <span id="last-selected" style={{ marginLeft: 16 }}>

@@ -1,17 +1,18 @@
 import { render } from '../commands'
 import '../../src/register'
+import { PlusOutlined } from '@ant-design/icons'
 
 // tests just a few selected commands to verify the integrity of registration logic
 describe('register (alternate entry point)', () => {
   it('registers parent commands', () => {
-    render(({ React, antd: { Button, Card, Table, Tooltip } }) => (
+    render(({ React, antd: { Button, Card, Table, Tooltip }, icons: { PlusOutlined } }) => (
       <Card title="Queen Singles" extra={<Button>Like Them!</Button>}>
         <Table
           dataSource={[
             { id: 1, name: "Now I'm Here", album: 'Sheer Heart Attack', duration: '4:12' },
             { id: 2, name: 'Bohemian Rhapsody', album: 'A Night at the Opera', duration: '5:55' },
             { id: 3, name: 'Bicycle Race', album: 'Jazz', duration: '3:01' },
-            { id: 4, name: "Don't Stop Me Now", album: 'Jazz', duration: '3:29' }
+            { id: 4, name: "Don't Stop Me Now", album: 'Jazz', duration: '3:29' },
           ]}
           columns={[
             { dataIndex: 'id', title: 'ID' },
@@ -23,9 +24,9 @@ describe('register (alternate entry point)', () => {
                 <Tooltip title={album}>
                   <span>{name}</span>
                 </Tooltip>
-              )
+              ),
             },
-            { dataIndex: 'duration', title: 'Duration' }
+            { dataIndex: 'duration', title: 'Duration' },
           ]}
           rowKey="id"
           pagination={false}
@@ -36,9 +37,7 @@ describe('register (alternate entry point)', () => {
     cy.getButton('Like Them!').should('be.visible')
     cy.getButton('Hate Them!').should('not.exist')
     cy.expectTableRows([['1', "Now I'm Here", '4:12'], [, , '5:55'], [], [, "Don't Stop Me Now"]], { scroll: false })
-    cy.getTableCell(1, 1, { scroll: false })
-      .find('span')
-      .trigger('mouseover')
+    cy.getTableCell(1, 1, { scroll: false }).find('span').trigger('mouseover')
     cy.getTooltip().should('have.text', 'A Night at the Opera')
   })
 
@@ -68,7 +67,7 @@ describe('register (alternate entry point)', () => {
             </Menu>
           }
         >
-          <Button icon="plus">Add Field</Button>
+          <Button icon={<PlusOutlined />}>Add Field</Button>
         </Dropdown>
       </Form>
     ))

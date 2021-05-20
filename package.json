@@ -29,6 +29,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
+    "@ant-design/icons": "^4.6.2",
     "@wisersolutions/eslint-config": "^2.0.1",
     "@wisersolutions/eslint-formatter-idea": "^1.0.7",
     "@wisersolutions/transpile-js": "^0.0.18",
