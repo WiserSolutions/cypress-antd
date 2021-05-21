@@ -29,9 +29,7 @@ describe('showPopover', () => {
 describe('hidePopover', () => {
   it('should make the `Popover` disappear', () => {
     renderPopover()
-    getToggle()
-      .then(showPopover())
-      .then(hidePopover())
+    getToggle().then(showPopover()).then(hidePopover())
     getPopover().should('not.exist')
   })
 })

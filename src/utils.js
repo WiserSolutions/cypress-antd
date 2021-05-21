@@ -21,7 +21,7 @@ export function logAndMute(name, message, options = { log: true }) {
 // region: Clock
 
 export const getClock = callback =>
-  cy.wrap([], MUTE).then(function() {
+  cy.wrap([], MUTE).then(function () {
     callback(this.clock)
   })
 
@@ -39,8 +39,6 @@ export const triggerAliased = (commandName, eventName, defaultOptions = {}) => o
 }
 
 export const expectVisibleText = selector => expectedText =>
-  selector()
-    .should('be.visible')
-    .and('have.text', expectedText)
+  selector().should('be.visible').and('have.text', expectedText)
 
 // endregion

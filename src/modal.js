@@ -9,9 +9,7 @@ export const getModalTitle = options => getModal(options).find('.ant-modal-title
 export const getModalBody = options => getModal(options).find('.ant-modal-body', options)
 
 export const getModalAction = (label, options) =>
-  getModal(options)
-    .find('.ant-modal-footer', options)
-    .contains('button', label, options)
+  getModal(options).find('.ant-modal-footer', options).contains('button', label, options)
 
 export const getModalConfirmTitle = options => getModal(options).find('.ant-modal-confirm-title', options)
 
@@ -49,18 +47,11 @@ export function expectModalConfirmActions(labels, options) {
 export const expectModalToOpen = options => getModal(options).should('exist')
 
 export const expectModalToClose = options => {
-  absoluteRoot()
-    .find('.ant-modal-mask:not(.ant-modal-mask-hidden)', options)
-    .should('not.exist')
-  absoluteRoot()
-    .find('.ant-modal', options)
-    .should('not.be.visible')
+  absoluteRoot().find('.ant-modal-mask:not(.ant-modal-mask-hidden)', options).should('not.exist')
+  absoluteRoot().find('.ant-modal', options).should('not.be.visible')
 }
 
-export const closeModal = options =>
-  getModal(options)
-    .find('.ant-modal-close-x', options)
-    .click(options)
+export const closeModal = options => getModal(options).find('.ant-modal-close-x', options).click(options)
 
 export function resolveModal(label, options) {
   const opts = logAndMute('resolveModal', label, options)

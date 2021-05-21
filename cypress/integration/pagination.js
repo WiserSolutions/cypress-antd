@@ -1,15 +1,15 @@
 import { render } from '../commands'
-import { selectPage, selectPageSize } from '../../src/pagination'
+import { selectNextPage, selectPage, selectPageSize, selectPrevPage } from '../../src/pagination'
 
-const renderPagination = () =>
+const renderPagination = (initialPage = 1) =>
   render(({ React, antd: { Pagination } }) => {
     const App = () => {
-      const [page, setPage] = React.useState(0)
+      const [page, setPage] = React.useState(initialPage)
       const [pageSize, setPageSize] = React.useState(10)
       return (
         <>
           <Pagination
-            page={page}
+            current={page}
             onChange={setPage}
             showSizeChanger
             pageSize={pageSize}
@@ -17,7 +17,7 @@ const renderPagination = () =>
             total={200}
           />
           <div id="values">
-            {page + 1}, {pageSize}
+            {page}, {pageSize}
           </div>
         </>
       )
@@ -31,14 +31,32 @@ describe('selectPage', () => {
     renderPagination()
     getValues().should('have.text', '1, 10')
     selectPage(3)
-    getValues().should('have.text', '4, 10')
+    getValues().should('have.text', '3, 10')
+  })
+})
+
+describe('selectPrevPage', () => {
+  it('selects previous page', () => {
+    renderPagination(3)
+    getValues().should('have.text', '3, 10')
+    selectPrevPage()
+    getValues().should('have.text', '2, 10')
+  })
+})
+
+describe('selectNextPage', () => {
+  it('selects next page', () => {
+    renderPagination(2)
+    getValues().should('have.text', '2, 10')
+    selectNextPage()
+    getValues().should('have.text', '3, 10')
   })
 })
 
 describe('selectPageSize', () => {
   it('selects page size', () => {
     renderPagination()
-    selectPageSize(30)
-    getValues().should('have.text', '1, 30')
+    selectPageSize(50)
+    getValues().should('have.text', '1, 50')
   })
 })

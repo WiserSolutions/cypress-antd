@@ -36,14 +36,12 @@ describe('register (alternate entry point)', () => {
     cy.getButton('Like Them!').should('be.visible')
     cy.getButton('Hate Them!').should('not.exist')
     cy.expectTableRows([['1', "Now I'm Here", '4:12'], [, , '5:55'], [], [, "Don't Stop Me Now"]], { scroll: false })
-    cy.getTableCell(1, 1, { scroll: false })
-      .find('span')
-      .trigger('mouseover')
+    cy.getTableCell(1, 1, { scroll: false }).find('span').trigger('mouseover')
     cy.getTooltip().should('have.text', 'A Night at the Opera')
   })
 
-  it.only('registers child commands', () => {
-    render(({ React, antd: { Form, Input, Tooltip, Button, Dropdown, Menu, Radio } }) => (
+  it('registers child commands', () => {
+    render(({ React, antd: { Form, Input, Tooltip, Button, Dropdown, Menu, Radio }, icons: { PlusOutlined } }) => (
       <Form>
         <Form.Item
           label={
@@ -68,7 +66,7 @@ describe('register (alternate entry point)', () => {
             </Menu>
           }
         >
-          <Button icon="plus">Add Field</Button>
+          <Button icon={<PlusOutlined />}>Add Field</Button>
         </Dropdown>
       </Form>
     ))

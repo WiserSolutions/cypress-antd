@@ -116,16 +116,11 @@ beforeEach(renderForm)
 describe('selectors', () => {
   describe('getFormField', () => {
     it('finds all form fields', () => {
-      getFormField()
-        .eq(1)
-        .should('have.text', 'Track')
+      getFormField().eq(1).should('have.text', 'Track')
     })
 
     it('finds form field by label', () => {
-      getFormField(trackName)
-        .should('be.visible')
-        .and('have.length', 1)
-        .and('have.text', 'Track')
+      getFormField(trackName).should('be.visible').and('have.length', 1).and('have.text', 'Track')
       getFormField({ label: 'Non-existent Field' }).should('not.exist')
     })
   })
@@ -134,9 +129,7 @@ describe('selectors', () => {
     it('finds form input by type', () => {
       getFormInput().should('have.value', defaultValues.trackName)
 
-      getFormInput({ type: FIELD_TYPE.MULTISELECT })
-        .eq(0)
-        .should('have.text', 'RockMetal ') // &nbsp;
+      getFormInput({ type: FIELD_TYPE.MULTISELECT }).eq(0).should('have.text', 'RockMetal ') // &nbsp;
 
       getFormInput({ type: FIELD_TYPE.RADIO })
         .eq(0)
@@ -152,10 +145,7 @@ describe('selectors', () => {
 
       getFormInput({ label: 'Style' }).should('not.exist') // type mismatch
 
-      getFormInput(restriction)
-        .find(':checked')
-        .closest('label')
-        .should('have.text', defaultValues.restriction)
+      getFormInput(restriction).find(':checked').closest('label').should('have.text', defaultValues.restriction)
     })
   })
 })
@@ -230,15 +220,11 @@ describe('assertions', () => {
 describe('interactions', () => {
   describe('setInputValue', () => {
     it('sets input value', () => {
-      getFormInput(trackName)
-        .then(setInputValue('White and Nerdy'))
-        .should('have.value', 'White and Nerdy')
+      getFormInput(trackName).then(setInputValue('White and Nerdy')).should('have.value', 'White and Nerdy')
     })
 
     it('clears input value', () => {
-      getFormInput(duration)
-        .then(setInputValue())
-        .should('have.value', '')
+      getFormInput(duration).then(setInputValue()).should('have.value', '')
     })
 
     it('appends input value', () => {
@@ -250,22 +236,16 @@ describe('interactions', () => {
 
   describe('setSelectValue', () => {
     it('sets select-box value', () => {
-      getFormField(mood)
-        .then(setSelectValue('Happy'))
-        .then(expectSelectValue('Happy'))
+      getFormField(mood).then(setSelectValue('Happy')).then(expectSelectValue('Happy'))
     })
 
     it('clears select-box value', () => {
-      getFormField(scale)
-        .then(setSelectValue())
-        .then(expectSelectValue())
+      getFormField(scale).then(setSelectValue()).then(expectSelectValue())
     })
 
     it('works inside `within`', () => {
       getFormField(mood).within(() => {
-        cy.root()
-          .then(setSelectValue('Sad'))
-          .then(expectSelectValue('Sad'))
+        cy.root().then(setSelectValue('Sad')).then(expectSelectValue('Sad'))
       })
     })
   })
