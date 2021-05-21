@@ -29,8 +29,8 @@ const unsupportedFieldType = type => new Error(`Field type "${type}" is not supp
 
 // region:Selection
 
-const getSelectValuePart = (scope, options) => scope.find('.ant-select-selection__rendered', options)
-const getSelectSearchPart = (scope, options) => scope.find('.ant-select-search__field', options)
+const getSelectValuePart = (scope, options) => scope.find('.ant-select-selector', options)
+const getSelectSearchPart = (scope, options) => scope.find('.ant-select-selection-search-input', options)
 
 export function getFormField({ label, ...options } = {}) {
   const opts = logAndMute('getFormField', label, options)
@@ -66,20 +66,20 @@ export function getFormInput({ label, type = FIELD_TYPE.INPUT, ...options } = {}
 export const expectSelectValue = (expectedValue, options) => $el => {
   const opts = logAndMute('expectSelectValue', expectedValue, options)
   on($el)
-    .find('.ant-select-selection-selected-value', opts)
+    .find('.ant-select-selection-item', opts)
     .should(...(expectedValue ? ['have.text', expectedValue] : ['not.exist']))
 }
 
 export const expectMultiSelectValue = (expectedValues, options) => $el => {
   expectedValues.forEach(val =>
-    on($el).contains('.ant-select-selection__choice__content', val, options).should('be.visible')
+    on($el).contains('.ant-select-selection-item-content', val, options).should('be.visible')
   )
 }
 
 export const expectSelectPlaceholder = (expectedPlaceholder, options) => $el => {
   const opts = logAndMute('expectSelectPlaceholder', expectedPlaceholder, options)
   on($el)
-    .find('.ant-select-selection__placeholder', opts)
+    .find('.ant-select-selection-placeholder', opts)
     .should(...(expectedPlaceholder ? ['have.text', expectedPlaceholder] : ['not.exist']))
 }
 
@@ -128,7 +128,7 @@ export function expectFormFieldError({ error: expectedHint, label, ...options })
   const opts = logAndMute('expectFieldError', `${label}: ${expectedHint}`, options)
   getFormInput({ label, ...opts })
     .parents('.ant-form-item-control', opts)
-    .find('.ant-form-explain', opts)
+    .find('.ant-form-item-explain', opts)
     .should('have.text', expectedHint)
 }
 
@@ -179,14 +179,14 @@ export const setSelectValue = (value, options) => $el => {
     tickIfOnClock(options)
     expectSelectDropdownToClose(options)
   } else {
-    on($el).find('.ant-select-selection__clear', options).click(options)
+    on($el).find('.ant-select-clear', options).click(options)
   }
   return on($el)
 }
 
 export const clearMultiselect = options => $el =>
   getSelectValuePart(on($el), options).then($field => {
-    const removalButtons = $field.find('.ant-select-selection__choice__remove')
+    const removalButtons = $field.find('.ant-select-selection-item-remove')
     if (removalButtons.length) {
       cy.wrap(removalButtons, options).click({ ...options, multiple: true })
     }
