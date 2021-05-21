@@ -40,7 +40,7 @@ describe('register (alternate entry point)', () => {
     cy.getTooltip().should('have.text', 'A Night at the Opera')
   })
 
-  it.only('registers child commands', () => {
+  it('registers child commands', () => {
     render(({ React, antd: { Form, Input, Tooltip, Button, Dropdown, Menu, Radio }, icons: { PlusOutlined } }) => (
       <Form>
         <Form.Item
