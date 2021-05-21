@@ -13,40 +13,26 @@ export const SORT_ORDER = {
   DESCENDING: 'desc'
 }
 
-/**
- * Get table or rather a table part. Ant Design table can actually consist of up to 3 tables:
- *  - base columns (possibly scrolling)
- *  - left-fixed columns
- *  - right-fixed columns
- * which are rendered so as to create an illusion that there's just one table with some fixed columns. The headers and
- * contents of fixed columns duplicate the content rendered in the base table, so accessing it requires specifically
- * targeting the "fixed columns table", otherwise the base table content gets targeted (but can't be interacted with,
- * because it's covered with the fixed columns table).
- *
- * @note All of the above applies only if the table either has scroll or at least a single fixed column (most of the
- *  useful tables have scroll, so that assumption is made here as well). Use `scroll: false` for tables where neither
- *  applies (those are truly singular).
- *
- * @param options.fixed {'right'|'left'}
- */
-export function getTable({ scroll = true, fixed, ...options } = {}) {
-  return scroll
-    ? cy.get(fixed ? `.ant-table-fixed-${fixed === true ? 'left' : fixed}` : '.ant-table-scroll', options)
-    : cy.get('.ant-table-content')
+export function getTable(options) {
+  return cy.get('.ant-table-container', options)
+}
+
+export function getTableHeader(options) {
+  return getTable(options).find('.ant-table-thead', options)
 }
 
 export function getTableRowSelectionHeader(options) {
-  return getTable(options).find('.ant-table-thead > tr > th.ant-table-selection-column', options)
+  return getTableHeader(options).find('> tr > th.ant-table-selection-column', options)
 }
 
 export function getTableColumnHeaders(options) {
-  return getTable(options).find('.ant-table-thead > tr > th:not(.ant-table-selection-column)')
+  return getTableHeader(options).find('> tr > th:not(.ant-table-selection-column)')
 }
 
 export function getTableColumnHeader(columnIdxOrLabel, options) {
   return isNumber(columnIdxOrLabel)
     ? getTableColumnHeaders(options).eq(columnIdxOrLabel)
-    : getTable(options).contains('.ant-table-thead > tr > th', columnIdxOrLabel, options)
+    : getTableHeader(options).contains('> tr > th', columnIdxOrLabel, options)
 }
 
 export function getTableColumnSorter(columnIdxOrLabel, { sortOrder = SORT_ORDER.ASCENDING, ...options } = {}) {
@@ -57,15 +43,15 @@ export function getTableColumnSorter(columnIdxOrLabel, { sortOrder = SORT_ORDER.
 }
 
 export function getTableFiltersDropdownToggle(columnIdxOrLabel, options) {
-  return getTableColumnHeader(columnIdxOrLabel, options).find('.anticon-filter', options)
+  return getTableColumnHeader(columnIdxOrLabel, options).find('.ant-table-filter-trigger', options)
 }
 
 export function getTableBody(options) {
-  return getTable(options).find('.ant-table-body', options)
+  return getTable(options).find('.ant-table-tbody', options)
 }
 
 export function getTableRows(options) {
-  return getTable(options).find('tbody > tr', options)
+  return getTableBody(options).find('> tr:not(.ant-table-measure-row)', options)
 }
 
 export function getTableRow(rowIdx = 0, options) {
@@ -129,7 +115,7 @@ export function expectTableSortedBy(columnIdxOrLabel, options = {}) {
     options
   )
   if (shouldNotBeSorted) cy.get('.ant-table-column-sorter.on').should('not.exist')
-  else getTableColumnSorter(columnIdxOrLabel, opts).should('have.class', 'on')
+  else getTableColumnSorter(columnIdxOrLabel, opts).should('have.class', 'active')
 }
 
 /**
@@ -149,9 +135,11 @@ export function filterTableBy(columnIdxOrLabel, values, options) {
     .find('.ant-table-filter-dropdown:visible')
     .within(() => {
       values.forEach(value => cy.contains('.ant-dropdown-menu-item', value).click())
-      cy.get(`.ant-table-filter-dropdown-link${values.length ? '.confirm' : '.clear'}`).click()
-      cy.root().should('not.be.visible')
+      cy.get(`.ant-table-filter-dropdown-btns`)
+        .find(values.length ? '.ant-btn-primary' : '.ant-btn-link')
+        .click()
     })
+  absoluteRoot(opts).find('.ant-table-filter-dropdown').should('not.be.visible')
 }
 
 export function toggleRowSelection(rowIdx, options) {
