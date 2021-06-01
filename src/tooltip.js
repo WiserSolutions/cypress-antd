@@ -7,9 +7,11 @@ export const getTooltip = (text, options) =>
 
 export const expectTooltip = (text, options) => getTooltip(text, options).should('exist')
 
-export const shouldHaveTooltip = (text, options = {}) => $el => {
-  cy.wrap($el).trigger('mouseover', { force: true, ...options })
-  expectTooltip(text, options)
-  cy.wrap($el).trigger('mouseout', { force: true, ...options })
-  getTooltip(text).should('not.exist')
-}
+export const shouldHaveTooltip =
+  (text, options = {}) =>
+  $el => {
+    cy.wrap($el).trigger('mouseover', { force: true, ...options })
+    expectTooltip(text, options)
+    cy.wrap($el).trigger('mouseout', { force: true, ...options })
+    getTooltip(text).should('not.exist')
+  }

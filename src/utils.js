@@ -33,10 +33,13 @@ export const tickIfOnClock = ({ tickInterval = 100 } = {}) =>
 // endregion
 // region: Macros
 
-export const triggerAliased = (commandName, eventName, defaultOptions = {}) => options => $el => {
-  const opts = logAndMute(commandName, '', options)
-  cy.wrap($el, MUTE).trigger(eventName, { ...defaultOptions, ...opts })
-}
+export const triggerAliased =
+  (commandName, eventName, defaultOptions = {}) =>
+  options =>
+  $el => {
+    const opts = logAndMute(commandName, '', options)
+    cy.wrap($el, MUTE).trigger(eventName, { ...defaultOptions, ...opts })
+  }
 
 export const expectVisibleText = selector => expectedText =>
   selector().should('be.visible').and('have.text', expectedText)
