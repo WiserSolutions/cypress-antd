@@ -166,10 +166,12 @@ export function expectSelectDropdownToClose(options) {
   absoluteRoot(options).find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)', options).should('not.exist')
 }
 
-export const setInputValue = (value, { append, ...options } = {}) => $el => {
-  if (value) on($el).type(append ? value : `{selectall}${value}`, options)
-  else on($el).clear(options)
-}
+export const setInputValue =
+  (value, { append, ...options } = {}) =>
+  $el => {
+    if (value) on($el).type(append ? value : `{selectall}${value}`, options)
+    else on($el).clear(options)
+  }
 
 export const setSelectValue = (value, options) => $el => {
   if (value) {
@@ -194,26 +196,30 @@ export const clearMultiselect = options => $el =>
 
 export const closeMultiselectOptions = options => $el => getSelectSearchPart(on($el), options).type('{esc}')
 
-export const setMultiselectValue = (values = [], { append, ...options } = {}) => $el => {
-  if (!append) clearMultiselect(options)($el)
+export const setMultiselectValue =
+  (values = [], { append, ...options } = {}) =>
+  $el => {
+    if (!append) clearMultiselect(options)($el)
 
-  getSelectValuePart(on($el), options).click(options)
-  values.forEach(value => chooseSelectDropdownOption(value, options))
-  closeMultiselectOptions(options)($el)
+    getSelectValuePart(on($el), options).click(options)
+    values.forEach(value => chooseSelectDropdownOption(value, options))
+    closeMultiselectOptions(options)($el)
 
-  tickIfOnClock(options)
-  expectSelectDropdownToClose(options)
-}
+    tickIfOnClock(options)
+    expectSelectDropdownToClose(options)
+  }
 
-export const setTagsValue = (values = [], { append, ...options } = {}) => $el => {
-  if (!append) clearMultiselect(options)($el)
+export const setTagsValue =
+  (values = [], { append, ...options } = {}) =>
+  $el => {
+    if (!append) clearMultiselect(options)($el)
 
-  values.forEach(value => getSelectSearchPart(on($el), options).type(`${value}{enter}`))
-  closeMultiselectOptions(options)($el)
+    values.forEach(value => getSelectSearchPart(on($el), options).type(`${value}{enter}`))
+    closeMultiselectOptions(options)($el)
 
-  tickIfOnClock(options)
-  expectSelectDropdownToClose(options)
-}
+    tickIfOnClock(options)
+    expectSelectDropdownToClose(options)
+  }
 
 export const setRadioValue = (value, options) => $el =>
   on($el).contains('.ant-radio-wrapper', value, options).click(options)
