@@ -6,9 +6,6 @@
     "type": "git",
     "url": "git+https://github.com/WiserSolutions/cypress-antd"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "author": "Wiser Solutions, Inc.",
   "contributors": [
     "Jan Konopásek"
@@ -46,7 +43,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
-    "@wisersolutions/cypress-without": "^1.1.6",
+    "@hon2a/cypress-without": "^1.1.6",
     "lodash": "^4.17.21"
   }
 }
