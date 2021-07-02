@@ -2,8 +2,6 @@
 
 Helpers for interacting with Ant Design components in Cypress tests.
 
-**Note: This package is no longer public, please use [@hon2a/cypress-antd](https://github.com/hon2a/cypress-antd).**
-
 
 ## Use
 
