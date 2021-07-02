@@ -1,5 +1,5 @@
 import { logAndMute, MUTE, tickIfOnClock } from './utils'
-import { absoluteRoot } from '@wisersolutions/cypress-without'
+import { absoluteRoot } from '@hon2a/cypress-without'
 
 export const getPopover = () => absoluteRoot().find('.ant-popover:visible')
 

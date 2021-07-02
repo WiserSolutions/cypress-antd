@@ -1,4 +1,4 @@
-import { absoluteRoot } from '@wisersolutions/cypress-without'
+import { absoluteRoot } from '@hon2a/cypress-without'
 
 import { logAndMute, triggerAliased } from './utils'
 

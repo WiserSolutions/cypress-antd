@@ -9,7 +9,7 @@ import isNumber from 'lodash/isNumber'
 import isObject from 'lodash/isObject'
 
 import { logAndMute, MUTE, tickIfOnClock } from './utils'
-import { absoluteRoot } from '@wisersolutions/cypress-without'
+import { absoluteRoot } from '@hon2a/cypress-without'
 
 export const FIELD_TYPE = {
   INPUT: 'input',
