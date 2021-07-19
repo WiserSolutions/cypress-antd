@@ -18,7 +18,7 @@ import {
   getTableColumnHeaders,
   expectTableColumnCount,
   expectTableColumnHeaders,
-  getTableHeader
+  getTableHeader, getTableScrollContainer, getTableBody
 } from '../../src/table'
 
 const data = [
@@ -104,16 +104,24 @@ describe('getTableHeader', () => {
   })
 })
 
+describe('getTableScrollContainer', () => {
+  it('finds scroll container of a scrolling table', () => {
+    renderTable(preset.scroll)
+    getTableScrollContainer().scrollTo('bottom')
+    getTable().find('tbody > tr:last-child').should('be.visible')
+  })
+})
+
 describe('getTableBody', () => {
   it('finds body of a simple table', () => {
     renderTable(preset.simple)
-    getTable().find('tr:first-child > td:first-child').should('have.text', data[0].name)
+    getTableBody().find('tr:first-child > td:first-child').should('have.text', data[0].name)
   })
 
   it('finds body of a scrolling table', () => {
     renderTable(preset.scroll)
     // in a scroll-enabled table the first row is a hidden "measure row"
-    getTable().find('tr:nth-child(2) > td:nth-child(3)').should('have.text', data[0].name)
+    getTableBody().find('tr:nth-child(2) > td:nth-child(3)').should('have.text', data[0].name)
   })
 })
 

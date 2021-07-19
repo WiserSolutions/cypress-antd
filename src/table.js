@@ -46,6 +46,10 @@ export function getTableFiltersDropdownToggle(columnIdxOrLabel, options) {
   return getTableColumnHeader(columnIdxOrLabel, options).find('.ant-table-filter-trigger', options)
 }
 
+export function getTableScrollContainer(options) {
+  return getTable(options).find('.ant-table-body')
+}
+
 export function getTableBody(options) {
   return getTable(options).find('.ant-table-tbody', options)
 }
