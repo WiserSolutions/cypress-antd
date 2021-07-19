@@ -214,6 +214,7 @@ export const setTagsValue =
   $el => {
     if (!append) clearMultiselect(options)($el)
 
+    getSelectValuePart(on($el), options).click(options)
     values.forEach(value => getSelectSearchPart(on($el), options).type(`${value}{enter}`))
     closeMultiselectOptions(options)($el)
 
