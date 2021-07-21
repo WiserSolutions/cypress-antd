@@ -8,7 +8,7 @@ import map from 'lodash/map'
 import isNumber from 'lodash/isNumber'
 import isObject from 'lodash/isObject'
 
-import { logAndMute, MUTE, tickIfOnClock } from './utils'
+import { ifOnClock, logAndMute, MUTE, tickIfOnClock } from './utils'
 import { absoluteRoot } from '@wisersolutions/cypress-without'
 
 export const FIELD_TYPE = {
@@ -155,8 +155,13 @@ export function expectFormFields(fields, { values, errors, ...options } = {}) {
 // endregion
 // region:Interaction
 
+function unlockSelectDropdownOptions(options) {
+  absoluteRoot(options).find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').then($el => $el.css({ 'pointer-events': 'all' }))
+}
+
 export function chooseSelectDropdownOption(value, options) {
   const opts = logAndMute('chooseSelectOption', value, options)
+  ifOnClock(() => unlockSelectDropdownOptions(opts))
   absoluteRoot(opts)
     .contains('.ant-select-dropdown:not(.ant-select-dropdown-hidden) .ant-select-item-option', value, opts)
     .click(opts)
@@ -176,6 +181,7 @@ export const setInputValue =
 export const setSelectValue = (value, options) => $el => {
   if (value) {
     getSelectValuePart(on($el), options).click(options)
+    tickIfOnClock(options)
     tickIfOnClock(options)
     chooseSelectDropdownOption(value, options)
     tickIfOnClock(options)
@@ -202,6 +208,8 @@ export const setMultiselectValue =
     if (!append) clearMultiselect(options)($el)
 
     getSelectValuePart(on($el), options).click(options)
+    tickIfOnClock(options)
+    tickIfOnClock(options)
     values.forEach(value => chooseSelectDropdownOption(value, options))
     closeMultiselectOptions(options)($el)
 

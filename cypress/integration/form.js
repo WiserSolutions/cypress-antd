@@ -293,7 +293,7 @@ describe('interactions', () => {
   })
 
   describe('setFormFieldValue', () => {
-    it('finds a form field and sets/clears its value', () => {
+    const test = () => {
       const newTrackName = { ...trackName, value: 'Pretender' }
       setFormFieldValue(newTrackName)
       expectFormFieldValue(newTrackName)
@@ -313,6 +313,13 @@ describe('interactions', () => {
       const newRestriction = { ...restriction, value: 'Fluffy' }
       setFormFieldValue(newRestriction)
       expectFormFieldValue(newRestriction)
+    }
+
+    it('finds a form field and sets/clears its value', test)
+
+    it('works even on virtual clock', () => {
+      cy.clock()
+      test()
     })
   })
 
