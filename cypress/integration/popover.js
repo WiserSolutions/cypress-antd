@@ -18,19 +18,33 @@ describe('getPopover', () => {
 })
 
 describe('showPopover', () => {
-  it('should make the `Popover` show up', () => {
+  const test = () => {
     renderPopover()
     getPopover().should('not.exist')
     getToggle().then(showPopover())
     getPopover().should('exist')
+  }
+
+  it('should make the `Popover` show up', test)
+
+  it('works on virtual clock', () => {
+    cy.clock()
+    test()
   })
 })
 
 describe('hidePopover', () => {
-  it('should make the `Popover` disappear', () => {
+  const test = () => {
     renderPopover()
     getToggle().then(showPopover()).then(hidePopover())
     getPopover().should('not.exist')
+  }
+
+  it('should make the `Popover` disappear', test)
+
+  it('works on virtual clock', () => {
+    cy.clock()
+    test()
   })
 })
 
