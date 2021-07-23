@@ -155,9 +155,11 @@ export function expectFormFields(fields, { values, errors, ...options } = {}) {
 // endregion
 // region:Interaction
 
-function unlockSelectDropdownOptions(options) {
-  absoluteRoot(options).find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').then($el => $el.css({ 'pointer-events': 'all' }))
-}
+export const getSelectDropdown = options => absoluteRoot(options).find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)', options)
+
+export const getSelectDropdownScrollContainer = options => getSelectDropdown(options).find('.rc-virtual-list-holder', options)
+
+const unlockSelectDropdownOptions = options => getSelectDropdown(options).then($el => $el.css({ 'pointer-events': 'all' }))
 
 export function chooseSelectDropdownOption(value, options) {
   const opts = logAndMute('chooseSelectOption', value, options)
@@ -168,7 +170,7 @@ export function chooseSelectDropdownOption(value, options) {
 }
 
 export function expectSelectDropdownToClose(options) {
-  absoluteRoot(options).find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)', options).should('not.exist')
+  getSelectDropdown(options).should('not.exist')
 }
 
 export const setInputValue =
