@@ -155,18 +155,21 @@ export function expectFormFields(fields, { values, errors, ...options } = {}) {
 // endregion
 // region:Interaction
 
-export const getSelectDropdown = options => absoluteRoot(options).find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)', options)
+const dropdownSelector =
+  '.ant-select-dropdown:not(.ant-select-dropdown-hidden):not(.ant-slide-up-leave):not(.ant-slide-down-leave):not(.ant-slice-up-appear):not(.ant-slide-down-appear)'
 
-export const getSelectDropdownScrollContainer = options => getSelectDropdown(options).find('.rc-virtual-list-holder', options)
+export const getSelectDropdown = options => absoluteRoot(options).find(dropdownSelector, options)
 
-const unlockSelectDropdownOptions = options => getSelectDropdown(options).then($el => $el.css({ 'pointer-events': 'all' }))
+export const getSelectDropdownScrollContainer = options =>
+  getSelectDropdown(options).find('.rc-virtual-list-holder', options)
+
+const unlockSelectDropdownOptions = options =>
+  getSelectDropdown(options).then($el => $el.css({ 'pointer-events': 'all' }))
 
 export function chooseSelectDropdownOption(value, options) {
   const opts = logAndMute('chooseSelectOption', value, options)
   ifOnClock(() => unlockSelectDropdownOptions(opts))
-  absoluteRoot(opts)
-    .contains('.ant-select-dropdown:not(.ant-select-dropdown-hidden) .ant-select-item-option', value, opts)
-    .click(opts)
+  absoluteRoot(opts).contains(`${dropdownSelector} .ant-select-item-option`, value, opts).click(opts)
 }
 
 export function expectSelectDropdownToClose(options) {

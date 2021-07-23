@@ -25,7 +25,7 @@ export const getClock = callback =>
     callback(this.clock)
   })
 
-export const ifOnClock = (callback) => getClock(clock => clock && callback(clock))
+export const ifOnClock = callback => getClock(clock => clock && callback(clock))
 
 export const tickIfOnClock = ({ tickInterval = 100 } = {}) =>
   getClock(clock => {
