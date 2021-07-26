@@ -160,8 +160,19 @@ const dropdownSelector =
 
 export const getSelectDropdown = options => absoluteRoot(options).find(dropdownSelector, options)
 
-export const getSelectDropdownScrollContainer = options =>
-  getSelectDropdown(options).find('.rc-virtual-list-holder', options)
+const scrollToToVerticalPosition = scrollTo => {
+  if (scrollTo === 'top') return 0
+  if (scrollTo === 'bottom') return Number.MAX_SAFE_INTEGER
+  if (isNumber(scrollTo)) return scrollTo
+  throw new Error('Vertical `scrollTo` must be either `top`, `bottom`, or a number!')
+}
+export const scrollSelectDropdown = (scrollTo, options) => {
+  // h4ck: some processing needs to finish before it's possible to interact with the list, it's unclear what
+  cy.wait(100) // eslint-disable-line cypress/no-unnecessary-waiting
+  getSelectDropdown(options)
+    .find('.rc-virtual-list-holder', options)
+    .then($el => $el[0].scrollTo({ top: scrollToToVerticalPosition(scrollTo) }))
+}
 
 const unlockSelectDropdownOptions = options =>
   getSelectDropdown(options).then($el => $el.css({ 'pointer-events': 'all' }))
@@ -183,19 +194,25 @@ export const setInputValue =
     else on($el).clear(options)
   }
 
-export const setSelectValue = (value, options) => $el => {
-  if (value) {
-    getSelectValuePart(on($el), options).click(options)
-    tickIfOnClock(options)
-    tickIfOnClock(options)
-    chooseSelectDropdownOption(value, options)
-    tickIfOnClock(options)
-    expectSelectDropdownToClose(options)
-  } else {
-    on($el).find('.ant-select-clear', options).click(options)
+export const setSelectValue =
+  (value, { scrollTo, ...options } = {}) =>
+  $el => {
+    if (value) {
+      getSelectValuePart(on($el), options).click(options)
+      tickIfOnClock(options)
+      tickIfOnClock(options)
+      if (scrollTo) {
+        scrollSelectDropdown(scrollTo, options)
+        tickIfOnClock(options)
+      }
+      chooseSelectDropdownOption(value, options)
+      tickIfOnClock(options)
+      expectSelectDropdownToClose(options)
+    } else {
+      on($el).find('.ant-select-clear', options).click(options)
+    }
+    return on($el)
   }
-  return on($el)
-}
 
 export const clearMultiselect = options => $el =>
   getSelectValuePart(on($el), options).then($field => {
@@ -208,14 +225,23 @@ export const clearMultiselect = options => $el =>
 export const closeMultiselectOptions = options => $el => getSelectSearchPart(on($el), options).type('{esc}')
 
 export const setMultiselectValue =
-  (values = [], { append, ...options } = {}) =>
+  (values = [], { append, scrollTo: scrollTos, ...options } = {}) =>
   $el => {
     if (!append) clearMultiselect(options)($el)
 
     getSelectValuePart(on($el), options).click(options)
     tickIfOnClock(options)
     tickIfOnClock(options)
-    values.forEach(value => chooseSelectDropdownOption(value, options))
+    values.forEach((value, idx) => {
+      if (scrollTos) {
+        const scrollTo = isArray(scrollTos) ? scrollTos[idx] : scrollTos
+        if (scrollTo) {
+          scrollSelectDropdown(scrollTo, options)
+          tickIfOnClock(options)
+        }
+      }
+      chooseSelectDropdownOption(value, options)
+    })
     closeMultiselectOptions(options)($el)
 
     tickIfOnClock(options)
