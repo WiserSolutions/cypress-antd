@@ -153,6 +153,10 @@ describe('assertions', () => {
     it('expects a select-box to have a specific value', () => {
       getFormField(scale).then(expectSelectValue(defaultValues.scale))
     })
+
+    it('expects a select-box to have no value', () => {
+      getFormField(mood).then(expectSelectValue(''))
+    })
   })
 
   describe('expectSelectPlaceholder', () => {
