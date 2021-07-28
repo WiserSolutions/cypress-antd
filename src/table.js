@@ -70,6 +70,14 @@ export function getTableCell(rowIdx = 0, colIdx = 0, options) {
   return getTableRow(rowIdx, options).find('td:not(.ant-table-selection-column)', options).eq(colIdx, options)
 }
 
+export function getTableLoadingIndicator(options) {
+  return cy.get('.ant-table-wrapper .ant-spin', options)
+}
+
+export function waitForTableToLoad(options) {
+  getTableLoadingIndicator(options).should('not.exist')
+}
+
 export function expectTableColumnCount(count, options) {
   const opts = logAndMute('expectTableColumnCount', count, options)
   return getTableColumnHeaders(opts).should('have.length', count)
