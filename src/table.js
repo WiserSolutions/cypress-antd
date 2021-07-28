@@ -46,6 +46,10 @@ export function getTableFiltersDropdownToggle(columnIdxOrLabel, options) {
   return getTableColumnHeader(columnIdxOrLabel, options).find('.ant-table-filter-trigger', options)
 }
 
+export function getTableScrollContainer(options) {
+  return getTable(options).find('.ant-table-body')
+}
+
 export function getTableBody(options) {
   return getTable(options).find('.ant-table-tbody', options)
 }
@@ -64,6 +68,14 @@ export function getTableRowSelectionCell(rowIdx = 0, options) {
 
 export function getTableCell(rowIdx = 0, colIdx = 0, options) {
   return getTableRow(rowIdx, options).find('td:not(.ant-table-selection-column)', options).eq(colIdx, options)
+}
+
+export function getTableLoadingIndicator(options) {
+  return cy.get('.ant-table-wrapper .ant-spin', options)
+}
+
+export function waitForTableToLoad(options) {
+  getTableLoadingIndicator(options).should('not.exist')
 }
 
 export function expectTableColumnCount(count, options) {

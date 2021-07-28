@@ -18,7 +18,10 @@ import {
   getTableColumnHeaders,
   expectTableColumnCount,
   expectTableColumnHeaders,
-  getTableHeader
+  getTableHeader,
+  getTableScrollContainer,
+  getTableBody,
+  getTableLoadingIndicator
 } from '../../src/table'
 
 const data = [
@@ -56,12 +59,13 @@ const [idLabel, nameLabel, durationLabel] = defaultColumns.map(({ title }) => ti
 
 const preset = {
   simple: { columns: defaultColumns.slice(1), rowSelection: false },
-  scroll: { scroll: { y: 300 } }
+  scroll: { scroll: { y: 300 } },
+  loading: { loading: true }
 }
 
 const rowText = ({ id, name, duration }) => [id, name, duration].join('')
 
-const renderTable = ({ columns = defaultColumns, rowSelection = { fixed: true }, scroll } = {}) =>
+const renderTable = ({ columns = defaultColumns, rowSelection = { fixed: true }, scroll, ...props } = {}) =>
   render(({ React, antd: { Table } }) => {
     const App = () => (
       <Table
@@ -71,6 +75,7 @@ const renderTable = ({ columns = defaultColumns, rowSelection = { fixed: true },
         pagination={false}
         scroll={scroll}
         rowKey="id"
+        {...props}
       />
     )
     return <App />
@@ -104,16 +109,24 @@ describe('getTableHeader', () => {
   })
 })
 
+describe('getTableScrollContainer', () => {
+  it('finds scroll container of a scrolling table', () => {
+    renderTable(preset.scroll)
+    getTableScrollContainer().scrollTo('bottom')
+    getTable().find('tbody > tr:last-child').should('be.visible')
+  })
+})
+
 describe('getTableBody', () => {
   it('finds body of a simple table', () => {
     renderTable(preset.simple)
-    getTable().find('tr:first-child > td:first-child').should('have.text', data[0].name)
+    getTableBody().find('tr:first-child > td:first-child').should('have.text', data[0].name)
   })
 
   it('finds body of a scrolling table', () => {
     renderTable(preset.scroll)
     // in a scroll-enabled table the first row is a hidden "measure row"
-    getTable().find('tr:nth-child(2) > td:nth-child(3)').should('have.text', data[0].name)
+    getTableBody().find('tr:nth-child(2) > td:nth-child(3)').should('have.text', data[0].name)
   })
 })
 
@@ -201,6 +214,18 @@ describe('getTableCell', () => {
 
   it('finds fixed column cell by coordinates', () => {
     getTableCell(4, 0, { fixed: 'left' }).should('be.visible').and('have.text', String(data[4].id))
+  })
+})
+
+describe.only('getTableLoadingIndicator', () => {
+  it('finds loading indicator', () => {
+    renderTable({ loading: true })
+    getTableLoadingIndicator().should('be.visible')
+  })
+
+  it("doesn't find anything if table is not loading", () => {
+    renderTable()
+    getTableLoadingIndicator().should('not.exist')
   })
 })
 

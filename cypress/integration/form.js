@@ -1,5 +1,6 @@
 import mapValues from 'lodash/mapValues'
 import pick from 'lodash/pick'
+import upperFirst from 'lodash/upperFirst'
 
 import { render } from '../commands'
 import {
@@ -20,6 +21,49 @@ import {
   setTagsValue
 } from '../../src/form'
 
+const musicalGenres = [
+  'alternative',
+  'blues',
+  'classical',
+  'comedy',
+  'country',
+  'dance',
+  'electronic',
+  'folk',
+  'industrial',
+  'jazz',
+  'latin',
+  'metal',
+  'pop',
+  'rap',
+  'reggae',
+  'rock',
+  'world'
+]
+const musicalScales = [
+  'acoustic',
+  'natural minor',
+  'algerian',
+  'altered',
+  'augmented',
+  'bebop dominant',
+  'blues',
+  'chromatic',
+  'dorian mode',
+  'double harmonic',
+  'enigmatic',
+  'flamenco mode',
+  'half diminished',
+  'harmonic',
+  'lydian mode',
+  'major',
+  'major pentatonic',
+  'minor',
+  'minor pentatonic',
+  'other',
+  'phrygian mode'
+]
+
 const renderForm = () =>
   render(({ React, antd: { Form, Input, InputNumber, Select, Radio } }) => (
     <Form>
@@ -34,10 +78,9 @@ const renderForm = () =>
       </Form.Item>
       <Form.Item label="Genre">
         <Select mode="multiple" defaultValue={['rock', 'metal']}>
-          <Select.Option key="rock">Rock</Select.Option>
-          <Select.Option key="metal">Metal</Select.Option>
-          <Select.Option key="classical">Classical</Select.Option>
-          <Select.Option key="rap">Rap</Select.Option>
+          {musicalGenres.map(key => (
+            <Select.Option key={key}>{upperFirst(key)}</Select.Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="Style">
@@ -59,10 +102,9 @@ const renderForm = () =>
       </Form.Item>
       <Form.Item label="Scale">
         <Select defaultValue="other" allowClear>
-          <Select.Option key="major">Major</Select.Option>
-          <Select.Option key="minor">Minor</Select.Option>
-          <Select.Option key="pentatonic">Pentatonic</Select.Option>
-          <Select.Option key="other">Other</Select.Option>
+          {musicalScales.map(key => (
+            <Select.Option key={key}>{upperFirst(key)}</Select.Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="Mood">
@@ -155,6 +197,10 @@ describe('assertions', () => {
     it('expects a select-box to have a specific value', () => {
       getFormField(scale).then(expectSelectValue(defaultValues.scale))
     })
+
+    it('expects a select-box to have no value', () => {
+      getFormField(mood).then(expectSelectValue(''))
+    })
   })
 
   describe('expectSelectPlaceholder', () => {
@@ -239,6 +285,10 @@ describe('interactions', () => {
       getFormField(mood).then(setSelectValue('Happy')).then(expectSelectValue('Happy'))
     })
 
+    it('scrolls before selecting value on request', () => {
+      getFormField(scale).then(setSelectValue('Acoustic', { scrollTo: 'top' }))
+    })
+
     it('clears select-box value', () => {
       getFormField(scale).then(setSelectValue()).then(expectSelectValue())
     })
@@ -252,8 +302,13 @@ describe('interactions', () => {
 
   describe('setMultiselectValue', () => {
     it('sets multiple selection select-box values', () => {
-      getFormField(genre).then(setMultiselectValue(['Metal', 'Classical']))
-      expectFormFieldValue({ ...genre, value: ['Metal', 'Classical'] })
+      getFormField(genre).then(setMultiselectValue(['Alternative', 'Classical']))
+      expectFormFieldValue({ ...genre, value: ['Alternative', 'Classical'] })
+    })
+
+    it('sets multiple values with scrolling in between', () => {
+      getFormField(genre).then(setMultiselectValue(['Metal', 'Rock', 'Jazz'], { scrollTo: [100, 200, 100] }))
+      expectFormFieldValue({ ...genre, value: ['Metal', 'Rock', 'Jazz'] })
     })
 
     it('clears multiple selection select-box values', () => {
@@ -293,7 +348,7 @@ describe('interactions', () => {
   })
 
   describe('setFormFieldValue', () => {
-    it('finds a form field and sets/clears its value', () => {
+    const test = () => {
       const newTrackName = { ...trackName, value: 'Pretender' }
       setFormFieldValue(newTrackName)
       expectFormFieldValue(newTrackName)
@@ -306,13 +361,20 @@ describe('interactions', () => {
       setFormFieldValue(newScale)
       expectFormFieldValue(newScale)
 
-      const newGenre = { ...genre, value: ['Rock'] }
+      const newGenre = { ...genre, value: ['Rock'], scrollTo: 'bottom' }
       setFormFieldValue(newGenre)
       expectFormFieldValue(newGenre)
 
       const newRestriction = { ...restriction, value: 'Fluffy' }
       setFormFieldValue(newRestriction)
       expectFormFieldValue(newRestriction)
+    }
+
+    it('finds a form field and sets/clears its value', test)
+
+    it('works even on virtual clock', () => {
+      cy.clock()
+      test()
     })
   })
 

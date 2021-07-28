@@ -1,6 +1,6 @@
 {
   "name": "@hon2a/cypress-antd",
-  "version": "0.3.2",
+  "version": "0.3.10",
   "description": "Helpers for interacting with Ant Design components in Cypress tests.",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "/lib"
   ],
   "scripts": {
-    "format": "prettier --write \"src/**/*.js\" --loglevel warn",
+    "format": "prettier --write \"./**/*.js\" --loglevel warn",
     "lint": "eslint -f @wisersolutions/eslint-formatter-idea ./src ./cypress",
     "test": "cypress run",
     "tdd": "cypress open",

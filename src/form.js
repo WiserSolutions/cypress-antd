@@ -8,7 +8,7 @@ import map from 'lodash/map'
 import isNumber from 'lodash/isNumber'
 import isObject from 'lodash/isObject'
 
-import { logAndMute, MUTE, tickIfOnClock } from './utils'
+import { ifOnClock, logAndMute, MUTE, tickIfOnClock } from './utils'
 import { absoluteRoot } from '@hon2a/cypress-without'
 
 export const FIELD_TYPE = {
@@ -155,15 +155,36 @@ export function expectFormFields(fields, { values, errors, ...options } = {}) {
 // endregion
 // region:Interaction
 
+const dropdownSelector =
+  '.ant-select-dropdown:not(.ant-select-dropdown-hidden):not(.ant-slide-up-leave):not(.ant-slide-down-leave):not(.ant-slice-up-appear):not(.ant-slide-down-appear)'
+
+export const getSelectDropdown = options => absoluteRoot(options).find(dropdownSelector, options)
+
+const scrollToToVerticalPosition = scrollTo => {
+  if (scrollTo === 'top') return 0
+  if (scrollTo === 'bottom') return Number.MAX_SAFE_INTEGER
+  if (isNumber(scrollTo)) return scrollTo
+  throw new Error('Vertical `scrollTo` must be either `top`, `bottom`, or a number!')
+}
+export const scrollSelectDropdown = (scrollTo, options) => {
+  // h4ck: some processing needs to finish before it's possible to interact with the list, it's unclear what
+  cy.wait(100) // eslint-disable-line cypress/no-unnecessary-waiting
+  getSelectDropdown(options)
+    .find('.rc-virtual-list-holder', options)
+    .then($el => $el[0].scrollTo({ top: scrollToToVerticalPosition(scrollTo) }))
+}
+
+const unlockSelectDropdownOptions = options =>
+  getSelectDropdown(options).then($el => $el.css({ 'pointer-events': 'all' }))
+
 export function chooseSelectDropdownOption(value, options) {
   const opts = logAndMute('chooseSelectOption', value, options)
-  absoluteRoot(opts)
-    .contains('.ant-select-dropdown:not(.ant-select-dropdown-hidden) .ant-select-item-option', value, opts)
-    .click(opts)
+  ifOnClock(() => unlockSelectDropdownOptions(opts))
+  absoluteRoot(opts).contains(`${dropdownSelector} .ant-select-item-option`, value, opts).click(opts)
 }
 
 export function expectSelectDropdownToClose(options) {
-  absoluteRoot(options).find('.ant-select-dropdown:not(.ant-select-dropdown-hidden)', options).should('not.exist')
+  getSelectDropdown(options).should('not.exist')
 }
 
 export const setInputValue =
@@ -173,18 +194,25 @@ export const setInputValue =
     else on($el).clear(options)
   }
 
-export const setSelectValue = (value, options) => $el => {
-  if (value) {
-    getSelectValuePart(on($el), options).click(options)
-    tickIfOnClock(options)
-    chooseSelectDropdownOption(value, options)
-    tickIfOnClock(options)
-    expectSelectDropdownToClose(options)
-  } else {
-    on($el).find('.ant-select-clear', options).click(options)
+export const setSelectValue =
+  (value, { scrollTo, ...options } = {}) =>
+  $el => {
+    if (value) {
+      getSelectValuePart(on($el), options).click(options)
+      tickIfOnClock(options)
+      tickIfOnClock(options)
+      if (scrollTo) {
+        scrollSelectDropdown(scrollTo, options)
+        tickIfOnClock(options)
+      }
+      chooseSelectDropdownOption(value, options)
+      tickIfOnClock(options)
+      expectSelectDropdownToClose(options)
+    } else {
+      on($el).find('.ant-select-clear', options).click(options)
+    }
+    return on($el)
   }
-  return on($el)
-}
 
 export const clearMultiselect = options => $el =>
   getSelectValuePart(on($el), options).then($field => {
@@ -197,12 +225,23 @@ export const clearMultiselect = options => $el =>
 export const closeMultiselectOptions = options => $el => getSelectSearchPart(on($el), options).type('{esc}')
 
 export const setMultiselectValue =
-  (values = [], { append, ...options } = {}) =>
+  (values = [], { append, scrollTo: scrollTos, ...options } = {}) =>
   $el => {
     if (!append) clearMultiselect(options)($el)
 
     getSelectValuePart(on($el), options).click(options)
-    values.forEach(value => chooseSelectDropdownOption(value, options))
+    tickIfOnClock(options)
+    tickIfOnClock(options)
+    values.forEach((value, idx) => {
+      if (scrollTos) {
+        const scrollTo = isArray(scrollTos) ? scrollTos[idx] : scrollTos
+        if (scrollTo) {
+          scrollSelectDropdown(scrollTo, options)
+          tickIfOnClock(options)
+        }
+      }
+      chooseSelectDropdownOption(value, options)
+    })
     closeMultiselectOptions(options)($el)
 
     tickIfOnClock(options)
@@ -214,6 +253,7 @@ export const setTagsValue =
   $el => {
     if (!append) clearMultiselect(options)($el)
 
+    getSelectValuePart(on($el), options).click(options)
     values.forEach(value => getSelectSearchPart(on($el), options).type(`${value}{enter}`))
     closeMultiselectOptions(options)($el)
 
