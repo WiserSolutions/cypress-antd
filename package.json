@@ -21,7 +21,7 @@
     "/lib"
   ],
   "scripts": {
-    "format": "prettier --write \"src/**/*.js\" --loglevel warn",
+    "format": "prettier --write \"./**/*.js\" --loglevel warn",
     "lint": "eslint -f @wisersolutions/eslint-formatter-idea ./src ./cypress",
     "test": "cypress run",
     "tdd": "cypress open",

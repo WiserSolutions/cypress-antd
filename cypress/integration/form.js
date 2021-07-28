@@ -21,8 +21,48 @@ import {
   setTagsValue
 } from '../../src/form'
 
-const musicalGenres = ['alternative', 'blues', 'classical', 'comedy', 'country', 'dance', 'electronic', 'folk', 'industrial', 'jazz', 'latin', 'metal', 'pop', 'rap', 'reggae', 'rock', 'world']
-const musicalScales = ['acoustic', 'natural minor', 'algerian', 'altered', 'augmented', 'bebop dominant', 'blues', 'chromatic', 'dorian mode', 'double harmonic', 'enigmatic', 'flamenco mode', 'half diminished', 'harmonic', 'lydian mode', 'major', 'major pentatonic', 'minor', 'minor pentatonic', 'other', 'phrygian mode']
+const musicalGenres = [
+  'alternative',
+  'blues',
+  'classical',
+  'comedy',
+  'country',
+  'dance',
+  'electronic',
+  'folk',
+  'industrial',
+  'jazz',
+  'latin',
+  'metal',
+  'pop',
+  'rap',
+  'reggae',
+  'rock',
+  'world'
+]
+const musicalScales = [
+  'acoustic',
+  'natural minor',
+  'algerian',
+  'altered',
+  'augmented',
+  'bebop dominant',
+  'blues',
+  'chromatic',
+  'dorian mode',
+  'double harmonic',
+  'enigmatic',
+  'flamenco mode',
+  'half diminished',
+  'harmonic',
+  'lydian mode',
+  'major',
+  'major pentatonic',
+  'minor',
+  'minor pentatonic',
+  'other',
+  'phrygian mode'
+]
 
 const renderForm = () =>
   render(({ React, antd: { Form, Input, InputNumber, Select, Radio } }) => (
@@ -38,7 +78,9 @@ const renderForm = () =>
       </Form.Item>
       <Form.Item label="Genre">
         <Select mode="multiple" defaultValue={['rock', 'metal']}>
-          {musicalGenres.map(key => <Select.Option key={key}>{upperFirst(key)}</Select.Option>)}
+          {musicalGenres.map(key => (
+            <Select.Option key={key}>{upperFirst(key)}</Select.Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="Style">
@@ -60,7 +102,9 @@ const renderForm = () =>
       </Form.Item>
       <Form.Item label="Scale">
         <Select defaultValue="other" allowClear>
-          {musicalScales.map(key => <Select.Option key={key}>{upperFirst(key)}</Select.Option>)}
+          {musicalScales.map(key => (
+            <Select.Option key={key}>{upperFirst(key)}</Select.Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="Mood">
@@ -263,7 +307,7 @@ describe('interactions', () => {
     })
 
     it('sets multiple values with scrolling in between', () => {
-      getFormField(genre).then(setMultiselectValue(['Metal', 'Rock', 'Jazz'], { scrollTo: [100, 200, 100]}))
+      getFormField(genre).then(setMultiselectValue(['Metal', 'Rock', 'Jazz'], { scrollTo: [100, 200, 100] }))
       expectFormFieldValue({ ...genre, value: ['Metal', 'Rock', 'Jazz'] })
     })
 
