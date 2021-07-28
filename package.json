@@ -1,13 +1,10 @@
 {
-  "name": "@wisersolutions/cypress-antd",
+  "name": "@hon2a/cypress-antd",
   "version": "0.3.10",
   "description": "Helpers for interacting with Ant Design components in Cypress tests.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WiserSolutions/cypress-antd"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "url": "git+https://github.com/hon2a/cypress-antd"
   },
   "author": "Wiser Solutions, Inc.",
   "contributors": [
@@ -46,7 +43,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
-    "@wisersolutions/cypress-without": "^1.1.6",
+    "@hon2a/cypress-without": "^1.1.6",
     "lodash": "^4.17.21"
   }
 }

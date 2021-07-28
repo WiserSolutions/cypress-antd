@@ -1,4 +1,4 @@
-import { absoluteRoot } from '@wisersolutions/cypress-without'
+import { absoluteRoot } from '@hon2a/cypress-without'
 
 export const MESSAGE_TYPE = {
   INFO: 'notice',

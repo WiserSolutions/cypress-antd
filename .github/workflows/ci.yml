@@ -13,7 +13,7 @@ jobs:
       with:
         node-version: '14'
         registry-url: https://npm.pkg.github.com/
-        scope: '@wisersolutions'
+        scope: '@hon2a'
     - run: npm i
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -28,7 +28,7 @@ jobs:
       with:
         node-version: '14'
         registry-url: https://npm.pkg.github.com/
-        scope: '@wisersolutions'
+        scope: '@hon2a'
     - run: npm i
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
