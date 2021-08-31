@@ -228,6 +228,7 @@ export const setMultiselectValue =
   (values = [], { append, scrollTo: scrollTos, ...options } = {}) =>
   $el => {
     if (!append) clearMultiselect(options)($el)
+    if (isEmpty(values)) return
 
     getSelectValuePart(on($el), options).click(options)
     tickIfOnClock(options)
@@ -252,6 +253,7 @@ export const setTagsValue =
   (values = [], { append, ...options } = {}) =>
   $el => {
     if (!append) clearMultiselect(options)($el)
+    if (isEmpty(values)) return
 
     getSelectValuePart(on($el), options).click(options)
     values.forEach(value => getSelectSearchPart(on($el), options).type(`${value}{enter}`))
