@@ -1,5 +1,5 @@
 import { logAndMute } from './utils'
-import { absoluteRoot } from '@wisersolutions/cypress-without'
+import { absoluteRoot } from '@hon2a/cypress-without'
 
 export const getPopconfirm = options => absoluteRoot().find('.ant-popconfirm:not(.ant-popover-hidden)', options)
 

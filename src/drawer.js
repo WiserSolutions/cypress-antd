@@ -1,4 +1,4 @@
-import { absoluteRoot } from '@wisersolutions/cypress-without'
+import { absoluteRoot } from '@hon2a/cypress-without'
 
 export const getDrawer = options => absoluteRoot(options).find('.ant-drawer:visible', options)
 export const getDrawerTitle = options => getDrawer(options).find('.ant-drawer-title', options)
