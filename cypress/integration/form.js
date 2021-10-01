@@ -388,6 +388,7 @@ describe('interactions', () => {
     }
     const fieldsToModify = pick(fields, ['trackName', 'duration', 'scale', 'genre', 'restriction'])
     const fieldsWithNewValues = addPropertyToFields('value', newValues)(fieldsToModify)
+    fieldsWithNewValues.genre.scrollTo = 'bottom'
 
     it('sets/clears values to/of selected form fields', () => {
       setFormFieldValues(fieldsWithNewValues)
@@ -400,7 +401,7 @@ describe('interactions', () => {
     })
 
     it('supports separately supplied `values`', () => {
-      setFormFieldValues(fieldsToModify, { values: newValues })
+      setFormFieldValues(fieldsToModify, { values: newValues, scrollTo: 'bottom' })
       expectFormFields(fieldsWithNewValues)
     })
   })
