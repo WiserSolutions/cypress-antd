@@ -1,1 +1,1 @@
-module.exports = require('@wisersolutions/transpile-js/babel.config')
+module.exports = require('@hon2a/transpile-js/babel.config')
