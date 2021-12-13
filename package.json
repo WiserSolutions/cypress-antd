@@ -12,23 +12,26 @@
   "module": "./es/index.js",
   "files": [
     "/es",
-    "/lib",
-    "index.d.ts"
+    "/lib"
   ],
-  "types": "index.d.ts",
   "scripts": {
     "format": "prettier --write \"./**/*.js\" --loglevel warn",
     "lint": "eslint -f @hon2a/eslint-formatter-idea ./src ./cypress",
+    "typecheck": "tsc --noEmit",
     "test": "cypress run",
     "tdd": "cypress open",
-    "build": "transpile-js",
+    "build": "tsc & tsc --project tsconfig.es.json",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@ant-design/icons": "4.7.0",
+    "@babel/runtime-corejs3": "7.16.3",
     "@babel/eslint-parser": "7.16.3",
+    "@babel/preset-env": "7.16.4",
+    "@babel/preset-react": "7.16.0",
+    "@babel/preset-typescript": "7.16.0",
     "@hon2a/eslint-formatter-idea": "1.0.9",
-    "@hon2a/transpile-js": "0.2.1",
+    "@types/lodash": "4.14.178",
     "@typescript-eslint/eslint-plugin": "5.6.0",
     "@typescript-eslint/parser": "5.6.0",
     "antd": "4.17.3",
@@ -44,7 +47,7 @@
   },
   "dependencies": {
     "@babel/runtime": "7.16.3",
-    "@hon2a/cypress-without": "1.1.6",
+    "@hon2a/cypress-without": "1.1.8",
     "lodash": "^4.17.21"
   }
 }

@@ -1,15 +1,17 @@
 import { absoluteRoot } from '@hon2a/cypress-without'
 
-export const getTooltip = (text, options) =>
+export const getTooltip = (text: string, options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Shadow>) =>
   text
     ? absoluteRoot().contains('.ant-tooltip:visible', text, options)
     : absoluteRoot().find('.ant-tooltip:visible', options)
 
-export const expectTooltip = (text, options) => getTooltip(text, options).should('exist')
+export const expectTooltip = (
+  text: string,
+  options: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Shadow> | undefined
+) => getTooltip(text, options).should('exist')
 
 export const shouldHaveTooltip =
-  (text, options = {}) =>
-  $el => {
+  (text: string, options?: Partial<Cypress.Loggable & Cypress.Timeoutable>) => ($el: JQuery) => {
     cy.wrap($el).trigger('mouseover', { force: true, ...options })
     expectTooltip(text, options)
     cy.wrap($el).trigger('mouseout', { force: true, ...options })

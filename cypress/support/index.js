@@ -18,3 +18,5 @@ import './commands'
 beforeEach(() => {
   cy.visit('cypress/fixtures/index.html')
 })
+
+Cypress.on('uncaught:exception', err => !err.message.includes('ResizeObserver loop limit exceeded'))
