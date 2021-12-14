@@ -136,6 +136,11 @@ export function expectFormFieldValue({
   }
 }
 
+type ExpectFormFieldValueArgs = Parameters<typeof expectFormFieldValue>
+export const expectFormFieldValueFn =
+  (field: Omit<ExpectFormFieldValueArgs[0], 'value'>) => (value: ExpectFormFieldValueArgs[0]['value']) =>
+    expectFormFieldValue({ ...field, value })
+
 export function expectFormFieldError({
   error: expectedHint,
   label,
@@ -147,6 +152,11 @@ export function expectFormFieldError({
     .find('.ant-form-item-explain', opts)
     .should('have.text', expectedHint)
 }
+
+type ExpectFormFieldErrorArgs = Parameters<typeof expectFormFieldError>
+export const expectFormFieldErrorFn =
+  (field: Omit<ExpectFormFieldErrorArgs[0], 'error'>) => (error: ExpectFormFieldErrorArgs[0]['error']) =>
+    expectFormFieldError({ ...field, error })
 
 // h4ck: shit-typed because it's internal and I don't have the time to properly type it
 function mergeFields(fields: any, additionalProps: any) {
@@ -183,6 +193,12 @@ export function expectFormFields(
     if (error) expectFormFieldError({ ...options, error, ...fieldSelector })
   })
 }
+
+type ExpectFormFieldsArgs = Parameters<typeof expectFormFields>
+export const expectFormFieldsFn =
+  (fields: ExpectFormFieldsArgs[0], options: Omit<ExpectFormFieldsArgs[1], 'values' | 'errors'>) =>
+  (values: NonNullable<ExpectFormFieldsArgs[1]>['values'], errors: NonNullable<ExpectFormFieldsArgs[1]>['errors']) =>
+    expectFormFields(fields, { ...options, values, errors } as ExpectFormFieldsArgs[1])
 
 // endregion
 // region:Interaction
@@ -346,18 +362,28 @@ export function setFormFieldValue({
   }
 }
 
+type SetFormFieldValueArgs = Parameters<typeof setFormFieldValue>
+export const setFormFieldValueFn =
+  (field: Omit<SetFormFieldValueArgs[0], 'value'>) => (value: SetFormFieldValueArgs[0]['value']) =>
+    setFormFieldValue({ ...field, value })
+
 export const setFormFieldValues = (
   fields: FormFieldValueOrErrorOptions[] | Record<string, FormFieldValueOrErrorOptions>,
   {
     values,
     ...options
-  }: ({ values?: (string | number | string[])[] } | { values?: Record<string, string | number | string[]> }) &
-    CommonOptions = {}
+  }: { values?: (string | number | string[])[] | Record<string, string | number | string[]> } & CommonOptions = {}
 ) => {
   const mergedFields = mergeFields(fields, { value: values })
   forEach(mergedFields, field => {
     if (!isUndefined(field.value)) setFormFieldValue({ ...options, ...field })
   })
 }
+
+type SetFormFieldValuesArgs = Parameters<typeof setFormFieldValues>
+export const setFormFieldValuesFn =
+  (fields: SetFormFieldValuesArgs[0], options: Omit<SetFormFieldValuesArgs[1], 'values'>) =>
+  (values: NonNullable<SetFormFieldValuesArgs[1]>['values']) =>
+    setFormFieldValues(fields, { ...options, values })
 
 // endregion
