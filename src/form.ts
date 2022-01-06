@@ -331,7 +331,7 @@ export const setRadioValue = (value: Label, options?: CommonOptions) => ($el: JQ
 export const setDatePickerValue =
   (value?: string, options: CommonOptions = {}) =>
   ($el: JQuery) => {
-    if (value) on($el).click().type(`{selectall}${value}`, options)
+    if (value) on($el).click().type(`{selectall}${value}{enter}`, options)
     else
       on($el)
         .siblings('.ant-picker-clear', options)
