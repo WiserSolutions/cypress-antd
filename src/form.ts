@@ -12,16 +12,17 @@ import { ifOnClock, logAndMute, MUTE, tickIfOnClock, TickOptions } from './utils
 import { absoluteRoot } from '@hon2a/cypress-without'
 import { CommonOptions, Label } from './types'
 
-type FieldType = 'input' | 'number' | 'select' | 'multiselect' | 'tags' | 'radio'
+type FieldType = 'input' | 'number' | 'select' | 'multiselect' | 'tags' | 'radio' | 'date'
 export const FIELD_TYPE = {
   INPUT: 'input' as FieldType,
   NUMBER_INPUT: 'number' as FieldType,
   SELECT: 'select' as FieldType,
   MULTISELECT: 'multiselect' as FieldType,
   TAGS: 'tags' as FieldType,
-  RADIO: 'radio' as FieldType
+  RADIO: 'radio' as FieldType,
+  DATE: 'date' as FieldType
 }
-const { INPUT, NUMBER_INPUT, SELECT, MULTISELECT, TAGS, RADIO } = FIELD_TYPE
+const { INPUT, NUMBER_INPUT, SELECT, MULTISELECT, TAGS, RADIO, DATE } = FIELD_TYPE
 
 const { $ } = Cypress
 
@@ -61,6 +62,8 @@ export function getFormInput({ label, type = FIELD_TYPE.INPUT, ...options }: For
       return getSelectValuePart(scope, opts)
     case RADIO:
       return scope.find('.ant-radio-group', opts)
+    case DATE:
+      return scope.find('.ant-picker-input > input', opts)
     default:
       throw unsupportedFieldType(type)
   }
@@ -116,7 +119,9 @@ export function expectFormFieldValue({
   switch (type) {
     case INPUT:
     case NUMBER_INPUT:
+    case DATE:
       getInput().should('have.value', isUndefined(value) ? '' : String(value))
+      if (shouldExpectPlaceholder) getInput().should('have.attr', 'placeholder', placeholder)
       return
     case SELECT:
       getInput().then(expectSelectValue(isUndefined(value) ? '' : String(value), opts))
@@ -323,6 +328,17 @@ export const setTagsValue =
 export const setRadioValue = (value: Label, options?: CommonOptions) => ($el: JQuery) =>
   on($el).contains('.ant-radio-wrapper', value, options).click(options)
 
+export const setDatePickerValue =
+  (value?: string, options: CommonOptions = {}) =>
+  ($el: JQuery) => {
+    if (value) on($el).click().type(`{selectall}${value}`, options)
+    else
+      on($el)
+        .siblings('.ant-picker-clear', options)
+        .click({ ...options, force: true }) // button is shown only on hover
+    return on($el)
+  }
+
 export function setFormFieldValue({
   label,
   type = FIELD_TYPE.INPUT,
@@ -356,6 +372,10 @@ export function setFormFieldValue({
     case RADIO:
       if (isArray(value) || value === undefined) throw new Error('Select `value` must be a `Label`.')
       getInput().then(setRadioValue(value, opts))
+      return
+    case DATE:
+      if (isArray(value) || isNumber(value)) throw new Error('Date `value` must be a string.')
+      getInput().then(setDatePickerValue(value, opts))
       return
     default:
       throw unsupportedFieldType(type)

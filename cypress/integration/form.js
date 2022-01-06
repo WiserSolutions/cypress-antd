@@ -1,6 +1,7 @@
 import mapValues from 'lodash/mapValues'
 import pick from 'lodash/pick'
 import upperFirst from 'lodash/upperFirst'
+import moment from 'moment'
 
 import { render } from '../commands'
 import {
@@ -18,7 +19,8 @@ import {
   clearMultiselect,
   setFormFieldValue,
   setFormFieldValues,
-  setTagsValue
+  setTagsValue,
+  setDatePickerValue
 } from '../../src/form'
 
 const musicalGenres = [
@@ -64,8 +66,10 @@ const musicalScales = [
   'phrygian mode'
 ]
 
+const defaultRecorded = moment('2022-01-01T09:30:00Z')
+
 const renderForm = () =>
-  render(({ React, antd: { Form, Input, InputNumber, Select, Radio } }) => (
+  render(({ React, antd: { Form, Input, InputNumber, Select, Radio, DatePicker } }) => (
     <Form>
       <Form.Item label="Track Number" validateStatus="error" help="That's not a valid track number!">
         <InputNumber defaultValue={0} />
@@ -116,6 +120,12 @@ const renderForm = () =>
       <Form.Item label="Tags">
         <Select mode="tags" defaultValue={['song']} />
       </Form.Item>
+      <Form.Item label="Recorded">
+        <DatePicker defaultValue={defaultRecorded} />
+      </Form.Item>
+      <Form.Item label="Produced">
+        <DatePicker placeholder="Pick a date" />
+      </Form.Item>
     </Form>
   ))
 
@@ -129,9 +139,12 @@ const fields = {
   restriction: { label: 'Restriction', type: FIELD_TYPE.RADIO },
   scale: { label: 'Scale', type: FIELD_TYPE.SELECT },
   mood: { label: 'Mood', type: FIELD_TYPE.SELECT, placeholder: 'None' },
-  tags: { label: 'Tags', type: FIELD_TYPE.TAGS }
+  tags: { label: 'Tags', type: FIELD_TYPE.TAGS },
+  recorded: { label: 'Recorded', type: FIELD_TYPE.DATE },
+  produced: { label: 'Produced', type: FIELD_TYPE.DATE }
 }
-const { trackNumber, trackName, description, genre, duration, restriction, scale, mood, tags } = fields
+const { trackNumber, trackName, description, genre, duration, restriction, scale, mood, tags, recorded, produced } =
+  fields
 
 const defaultValues = {
   trackNumber: 0,
@@ -141,7 +154,8 @@ const defaultValues = {
   duration: 60,
   restriction: 'Unrated',
   scale: 'Other',
-  tags: ['song']
+  tags: ['song'],
+  recorded: '2022-01-01'
 }
 
 const defaultErrors = {
@@ -178,6 +192,10 @@ describe('selectors', () => {
         .find(':checked')
         .closest('label')
         .should('have.text', defaultValues.style)
+
+      getFormInput({ type: FIELD_TYPE.DATE })
+        .should('have.attr', 'placeholder', 'Select date')
+        .and('have.value', defaultValues.recorded)
     })
 
     it('finds form input by type and field label', () => {
@@ -188,6 +206,8 @@ describe('selectors', () => {
       getFormInput({ label: 'Style' }).should('not.exist') // type mismatch
 
       getFormInput(restriction).find(':checked').closest('label').should('have.text', defaultValues.restriction)
+
+      getFormInput(recorded).should('have.attr', 'placeholder', 'Select date').and('have.value', defaultValues.recorded)
     })
   })
 })
@@ -220,6 +240,8 @@ describe('assertions', () => {
       expectFormFieldValue(fieldsWithValues.genre)
 
       expectFormFieldValue(fieldsWithValues.restriction)
+
+      expectFormFieldValue(fieldsWithValues.recorded)
     })
 
     it('expects a form field to show a specific placeholder', () => {
@@ -232,6 +254,8 @@ describe('assertions', () => {
         ...mood,
         placeholder: 'None'
       })
+
+      expectFormFieldValue({ ...produced, placeholder: 'Pick a date' })
     })
   })
 
@@ -347,7 +371,17 @@ describe('interactions', () => {
     })
   })
 
-  describe('setFormFieldValue', () => {
+  describe('setDatePickerValue', () => {
+    it('sets date picker value', () => {
+      getFormInput(produced).then(setDatePickerValue('2021-12-24')).should('have.value', '2021-12-24')
+    })
+
+    it('clears input value', () => {
+      getFormInput(recorded).then(setDatePickerValue()).should('have.value', '')
+    })
+  })
+
+  describe.only('setFormFieldValue', () => {
     const test = () => {
       const newTrackName = { ...trackName, value: 'Pretender' }
       setFormFieldValue(newTrackName)
@@ -368,6 +402,10 @@ describe('interactions', () => {
       const newRestriction = { ...restriction, value: 'Fluffy' }
       setFormFieldValue(newRestriction)
       expectFormFieldValue(newRestriction)
+
+      const newRecorded = { ...recorded, value: '2022-02-28' }
+      setFormFieldValue(newRecorded)
+      expectFormFieldValue(newRecorded)
     }
 
     it('finds a form field and sets/clears its value', test)
