@@ -37,11 +37,19 @@ const getSelectSearchPart = <Subject>(scope: Cypress.Chainable<Subject>, options
   scope.find('.ant-select-selection-search-input', options)
 
 type FormFieldOptions = { label?: string }
+
+export function getFormFieldLabel({ label, ...options }: FormFieldOptions & CommonOptions) {
+  const opts = logAndMute('getFormFieldLabel', label, options)
+  return isUndefined(label)
+    ? cy.get('.ant-form-item-label', opts)
+    : cy.contains('.ant-form-item-label', new RegExp(`^${escapeRegExp(label)}$`, 'u'), opts)
+}
+
 export function getFormField({ label, ...options }: FormFieldOptions & CommonOptions = {}) {
   const opts = logAndMute('getFormField', label, options)
   return isUndefined(label)
     ? cy.get('.ant-form-item', opts)
-    : cy.contains('.ant-form-item-label', new RegExp(`^${escapeRegExp(label)}$`, 'u')).closest('.ant-form-item')
+    : getFormFieldLabel({ label, ...opts }).closest('.ant-form-item')
 }
 
 type FormInputOptions = FormFieldOptions & { type?: FieldType }
