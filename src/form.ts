@@ -7,6 +7,7 @@ import mapValues from 'lodash/mapValues'
 import map from 'lodash/map'
 import isNumber from 'lodash/isNumber'
 import isObject from 'lodash/isObject'
+import escapeRegExp from 'lodash/escapeRegExp'
 
 import { ifOnClock, logAndMute, MUTE, tickIfOnClock, TickOptions } from './utils'
 import { absoluteRoot } from '@hon2a/cypress-without'
@@ -24,8 +25,6 @@ export const FIELD_TYPE = {
 }
 const { INPUT, NUMBER_INPUT, SELECT, MULTISELECT, TAGS, RADIO, DATE } = FIELD_TYPE
 
-const { $ } = Cypress
-
 const on = ($el: JQuery) => cy.wrap($el, MUTE)
 
 const unsupportedFieldType = (type: string) => new Error(`Field type "${type}" is not supported!`)
@@ -40,11 +39,9 @@ const getSelectSearchPart = <Subject>(scope: Cypress.Chainable<Subject>, options
 type FormFieldOptions = { label?: string }
 export function getFormField({ label, ...options }: FormFieldOptions & CommonOptions = {}) {
   const opts = logAndMute('getFormField', label, options)
-  return cy
-    .get('.ant-form-item', opts)
-    .then(field =>
-      isUndefined(label) ? field : field.filter((idx, el) => $(el).children('.ant-form-item-label').text() === label)
-    )
+  return isUndefined(label)
+    ? cy.get('.ant-form-item', opts)
+    : cy.contains('.ant-form-item-label', new RegExp(`^${escapeRegExp(label)}$`, 'u')).closest('.ant-form-item')
 }
 
 type FormInputOptions = FormFieldOptions & { type?: FieldType }
