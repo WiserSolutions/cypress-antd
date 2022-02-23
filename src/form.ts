@@ -49,7 +49,7 @@ export function getFormField({ label, ...options }: FormFieldOptions & CommonOpt
   const opts = logAndMute('getFormField', label, options)
   return isUndefined(label)
     ? cy.get('.ant-form-item', opts)
-    : getFormFieldLabel({ label, ...opts }).closest('.ant-form-item')
+    : getFormFieldLabel({ label, ...opts }).closest('.ant-form-item', opts)
 }
 
 type FormInputOptions = FormFieldOptions & { type?: FieldType }
