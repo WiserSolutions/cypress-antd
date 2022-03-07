@@ -261,6 +261,10 @@ describe('assertions', () => {
 
   describe('expectFormFieldError', () => {
     it('expects a form field to have a specific validation hint', () => {
+      expectFormFieldError(description)
+    })
+
+    it('expects form field to have no validation hint', () => {
       expectFormFieldError({
         ...trackNumber,
         error: "That's not a valid track number!"

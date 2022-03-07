@@ -155,11 +155,10 @@ export function expectFormFieldError({
   error: expectedHint,
   label,
   ...options
-}: { error: string } & FormFieldOptions & CommonOptions) {
+}: { error?: string } & FormFieldOptions & CommonOptions) {
   const opts = logAndMute('expectFieldError', `${label}: ${expectedHint}`, options)
-  getFormField({ label, ...opts })
-    .find('.ant-form-item-control .ant-form-item-explain', opts)
-    .should('have.text', expectedHint)
+  const field = getFormField({ label, ...opts }).find('.ant-form-item-control .ant-form-item-explain', opts)
+  return expectedHint ? field.should('have.text', expectedHint) : field.should('not.exist')
 }
 
 type ExpectFormFieldErrorArgs = Parameters<typeof expectFormFieldError>
