@@ -163,7 +163,7 @@ export function expectFormFieldError({
 
 type ExpectFormFieldErrorArgs = Parameters<typeof expectFormFieldError>
 export const expectFormFieldErrorFn =
-  (field: Omit<ExpectFormFieldErrorArgs[0], 'error'>) => (error: ExpectFormFieldErrorArgs[0]['error']) =>
+  (field: Omit<ExpectFormFieldErrorArgs[0], 'error'>) => (error?: ExpectFormFieldErrorArgs[0]['error']) =>
     expectFormFieldError({ ...field, error })
 
 // h4ck: shit-typed because it's internal and I don't have the time to properly type it
