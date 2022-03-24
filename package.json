@@ -20,7 +20,7 @@
     "typecheck": "tsc --noEmit",
     "test": "cypress run",
     "tdd": "cypress open",
-    "build": "tsc & tsc --project tsconfig.es.json",
+    "build": "transpile-js --ignore '**/*.ts' & tsc & tsc --project tsconfig.es.json",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
@@ -31,6 +31,7 @@
     "@babel/preset-react": "7.16.0",
     "@babel/preset-typescript": "7.16.0",
     "@hon2a/eslint-formatter-idea": "1.0.9",
+    "@hon2a/transpile-js": "0.2.2",
     "@types/lodash": "4.14.178",
     "@typescript-eslint/eslint-plugin": "5.6.0",
     "@typescript-eslint/parser": "5.6.0",
