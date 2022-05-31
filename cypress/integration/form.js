@@ -9,6 +9,7 @@ import {
   getFormField,
   getFormInput,
   expectFormFieldValue,
+  expectSelectOptions,
   expectSelectValue,
   expectSelectPlaceholder,
   expectFormFieldError,
@@ -105,7 +106,7 @@ const renderForm = () =>
         </Radio.Group>
       </Form.Item>
       <Form.Item label="Scale">
-        <Select defaultValue="other" allowClear>
+        <Select defaultValue="other" allowClear virtual={false}>
           {musicalScales.map(key => (
             <Select.Option key={key}>{upperFirst(key)}</Select.Option>
           ))}
@@ -177,7 +178,6 @@ describe('selectors', () => {
 
     it('finds form field by label', () => {
       getFormField(trackName).should('be.visible').and('have.length', 1).and('have.text', 'Track')
-      getFormField({ label: 'Non-existent Field' }).should('not.exist')
     })
   })
 
@@ -213,6 +213,12 @@ describe('selectors', () => {
 })
 
 describe('assertions', () => {
+  describe('expectSelectOptions', () => {
+    it('expects a select-box to offer a specific list of options', () => {
+      getFormField(scale).then(expectSelectOptions(musicalScales.map(key => upperFirst(key))))
+    })
+  })
+
   describe('expectSelectValue', () => {
     it('expects a select-box to have a specific value', () => {
       getFormField(scale).then(expectSelectValue(defaultValues.scale))
@@ -385,7 +391,7 @@ describe('interactions', () => {
     })
   })
 
-  describe.only('setFormFieldValue', () => {
+  describe('setFormFieldValue', () => {
     const test = () => {
       const newTrackName = { ...trackName, value: 'Pretender' }
       setFormFieldValue(newTrackName)

@@ -31,6 +31,12 @@ const unsupportedFieldType = (type: string) => new Error(`Field type "${type}" i
 
 // region:Selection
 
+const selectDropdownSelector =
+  '.ant-select-dropdown:not(.ant-select-dropdown-hidden):not(.ant-slide-up-leave):not(.ant-slide-down-leave):not(.ant-slice-up-appear):not(.ant-slide-down-appear)'
+
+export const getSelectDropdown = (options?: CommonOptions) =>
+  absoluteRoot(options).find(selectDropdownSelector, options)
+
 const getSelectValuePart = <Subject>(scope: Cypress.Chainable<Subject>, options?: CommonOptions) =>
   scope.find('.ant-select-selector', options)
 const getSelectSearchPart = <Subject>(scope: Cypress.Chainable<Subject>, options?: CommonOptions) =>
@@ -76,6 +82,25 @@ export function getFormInput({ label, type = FIELD_TYPE.INPUT, ...options }: For
 
 // endregion
 // region:Assertions
+
+export function expectSelectDropdownToClose(options?: CommonOptions) {
+  getSelectDropdown(options).should('not.exist')
+}
+
+// use only on `Select` with `virtual={false}` or with <10 options
+export const expectSelectOptions =
+  (expectedOptions: string[], options?: TickOptions & CommonOptions) => ($el: JQuery) => {
+    const opts = logAndMute('expectSelectOptions', expectedOptions.join(', '), options)
+    getSelectValuePart(on($el), opts).click(opts)
+    tickIfOnClock(opts)
+    tickIfOnClock(opts)
+    absoluteRoot(opts)
+      .find(`${selectDropdownSelector} .ant-select-item-option`, opts)
+      .should($opts => expect($opts.toArray().map(el => el.innerText)).to.deep.equal(expectedOptions))
+    getSelectValuePart(on($el), opts).click(opts)
+    tickIfOnClock(opts)
+    expectSelectDropdownToClose(opts)
+  }
 
 export const expectSelectValue = (expectedValue?: string, options?: CommonOptions) => ($el: JQuery) => {
   const opts = logAndMute('expectSelectValue', expectedValue, options)
@@ -211,11 +236,6 @@ export const expectFormFieldsFn =
 // endregion
 // region:Interaction
 
-const dropdownSelector =
-  '.ant-select-dropdown:not(.ant-select-dropdown-hidden):not(.ant-slide-up-leave):not(.ant-slide-down-leave):not(.ant-slice-up-appear):not(.ant-slide-down-appear)'
-
-export const getSelectDropdown = (options?: CommonOptions) => absoluteRoot(options).find(dropdownSelector, options)
-
 type ScrollPosition = 'top' | 'bottom' | number
 const scrollToToVerticalPosition = (scrollTo: ScrollPosition) => {
   if (scrollTo === 'top') return 0
@@ -237,11 +257,7 @@ const unlockSelectDropdownOptions = (options?: CommonOptions) =>
 export function chooseSelectDropdownOption(value: Label, options?: CommonOptions) {
   const opts = logAndMute('chooseSelectOption', value.toString(), options)
   ifOnClock(() => unlockSelectDropdownOptions(opts))
-  absoluteRoot(opts).contains(`${dropdownSelector} .ant-select-item-option`, value, opts).click(opts)
-}
-
-export function expectSelectDropdownToClose(options?: CommonOptions) {
-  getSelectDropdown(options).should('not.exist')
+  absoluteRoot(opts).contains(`${selectDropdownSelector} .ant-select-item-option`, value, opts).click(opts)
 }
 
 export const setInputValue =
