@@ -152,10 +152,10 @@ export function filterTableBy(columnIdxOrLabel: number | Label, values: Label[],
   absoluteRoot(opts)
     .find('.ant-table-filter-dropdown:visible')
     .within(() => {
-      values.forEach(value => cy.contains('.ant-dropdown-menu-item', value).click())
-      cy.get(`.ant-table-filter-dropdown-btns`)
-        .find(values.length ? '.ant-btn-primary' : '.ant-btn-link')
-        .click()
+      if (values.length) values.forEach(value => cy.contains('.ant-dropdown-menu-item', value).click())
+      else cy.get(`.ant-table-filter-dropdown-btns`).find('.ant-btn-link').click()
+
+      cy.get(`.ant-table-filter-dropdown-btns`).find('.ant-btn-primary').click()
     })
   absoluteRoot(opts).find('.ant-table-filter-dropdown').should('not.be.visible')
 }
