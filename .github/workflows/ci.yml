@@ -55,7 +55,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-react-shared-ui-lib-${{ hashFiles('./package-lock.json') }}
+          key: ${{ runner.os }}-cypress-antd-${{ hashFiles('./package-lock.json') }}
 
       - name: Install
         run: npm i
