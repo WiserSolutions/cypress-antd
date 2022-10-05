@@ -63,7 +63,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Cypress
-        uses: cypress-io/github-action@v7.x.x # use the explicit version number
+        uses: cypress-io/github-action@v4.x.x # use the explicit version number
         with:
           runTests: false
           build: npm run build
