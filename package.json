@@ -1,6 +1,6 @@
 {
   "name": "@wisersolutions/cypress-antd",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Helpers for interacting with Ant Design components in Cypress tests.",
   "repository": {
     "type": "git",
