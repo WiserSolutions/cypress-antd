@@ -28,6 +28,31 @@ jobs:
       - name: Run Linter
         run: npm run lint
 
+  build:
+    name: build
+    needs: ["lint"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+          registry-url: https://npm.pkg.github.com/
+          scope: "@wisersolutions"
+
+      - name: Check out
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install
+        run: npm i
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        run: npm run build
+
   tests:
     name: tests
     needs: ["lint"]
