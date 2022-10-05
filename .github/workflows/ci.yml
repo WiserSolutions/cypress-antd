@@ -8,28 +8,59 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@main
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '14'
-        registry-url: https://npm.pkg.github.com/
-        scope: '@wisersolutions'
-    - run: npm i
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.WISER_CI_TOKEN }}
-    - run: npm run lint
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+          registry-url: https://npm.pkg.github.com/
+          scope: "@wisersolutions"
+
+      - name: Check out
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache Deps
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-cypress-antd-${{ hashFiles('./package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm i
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Linter
+        run: npm run lint
 
   tests:
     name: tests
+    needs: ["lint"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
-      - uses: actions/setup-node@v1
+      - name: Setup Node
+        uses: actions/setup-node@v1
         with:
-          node-version: '14'
+          node-version: "14"
           registry-url: https://npm.pkg.github.com/
-          scope: '@wisersolutions'
-      - run: npm i
+          scope: "@wisersolutions"
+
+      - name: Check out
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache Deps
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-react-shared-ui-lib-${{ hashFiles('./package-lock.json') }}
+
+      - name: Install
+        run: npm i
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.WISER_CI_TOKEN }}
-      - run: npm run test
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Test
+        run: npm run test
