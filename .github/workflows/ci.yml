@@ -20,12 +20,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache Deps
-        uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-cypress-antd-${{ hashFiles('./package-lock.json') }}
-
       - name: Install dependencies
         run: npm i
         env:
@@ -51,22 +45,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache Deps
-        uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-cypress-antd-${{ hashFiles('./package-lock.json') }}
-
       - name: Install
         run: npm i
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install Cypress
-        uses: cypress-io/github-action@v4.x.x # use the explicit version number
-        with:
-          runTests: false
-          build: npm run build
 
       - name: Test
         run: npm run test
