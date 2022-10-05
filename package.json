@@ -33,7 +33,7 @@
     "@wisersolutions/transpile-js": "^0.2.1",
     "antd": "^4.23.4",
     "babel-eslint": "^6.1.0",
-    "cypress": "^10.9.0",
+    "cypress": "^7.3.0",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.12.1",
