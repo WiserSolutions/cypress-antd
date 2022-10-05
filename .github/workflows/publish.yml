@@ -16,7 +16,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@wisersolutions'
       - uses: actions/checkout@master
-      - run: npm i --frozen-lockfile
+      - run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.WISER_CI_TOKEN }}
       - run: npm run build
