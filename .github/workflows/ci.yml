@@ -62,5 +62,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Cypress
+        run: cypress install
+
       - name: Test
         run: npm run test
