@@ -27,24 +27,24 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@ant-design/icons": "^4.6.2",
-    "@wisersolutions/eslint-config": "^2.1.1",
+    "@ant-design/icons": "^4.7.0",
+    "@wisersolutions/eslint-config": "^2.1.4",
     "@wisersolutions/eslint-formatter-idea": "^1.0.8",
-    "@wisersolutions/transpile-js": "^0.2.0",
-    "antd": "^4.23.0",
-    "babel-eslint": "^10.1.0",
+    "@wisersolutions/transpile-js": "^0.2.1",
+    "antd": "^4.23.4",
+    "babel-eslint": "^6.1.0",
     "cypress": "^7.3.0",
-    "eslint": "^7.27.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-cypress": "^2.11.3",
-    "eslint-plugin-react": "^7.24.0",
-    "prettier": "^2.3.0",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-react": "^7.31.8",
+    "prettier": "^2.7.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@babel/runtime": "^7.14.0",
-    "@hon2a/cypress-without": "^1.1.6",
+    "@babel/runtime": "^7.19.0",
+    "@hon2a/cypress-without": "^1.1.8",
     "lodash": "^4.17.21"
   }
 }

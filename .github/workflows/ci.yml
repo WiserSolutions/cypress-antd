@@ -8,28 +8,47 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-        registry-url: https://npm.pkg.github.com/
-        scope: '@hon2a'
-    - run: npm i
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: npm run lint
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+          registry-url: https://npm.pkg.github.com/
+          scope: "@wisersolutions"
+
+      - name: Check out
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: npm i
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Linter
+        run: npm run lint
 
   tests:
     name: tests
+    needs: ["lint"]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '14'
-        registry-url: https://npm.pkg.github.com/
-        scope: '@hon2a'
-    - run: npm i
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: npm run test
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+          registry-url: https://npm.pkg.github.com/
+          scope: "@wisersolutions"
+
+      - name: Check out
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install
+        run: npm i
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Test
+        run: npm run test
