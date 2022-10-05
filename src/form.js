@@ -37,9 +37,7 @@ export function getFormField({ label, ...options } = {}) {
   return cy
     .get('.ant-form-item', opts)
     .then(field =>
-      isUndefined(label)
-        ? field
-        : field.filter((idx, el) => $(el).children('.ant-row').children('.ant-form-item-label').text() === label)
+      isUndefined(label) ? field : field.filter((idx, el) => $(el).children('.ant-form-item-label').text() === label)
     )
 }
 
