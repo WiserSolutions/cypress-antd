@@ -40,6 +40,7 @@ export function getFormField({ label, ...options } = {}) {
       : field.filter(
           (idx, el) =>
             $(el)
+              .children('.ant-row')
               .children('.ant-form-item-label')
               .text() === label
         )
