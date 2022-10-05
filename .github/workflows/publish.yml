@@ -14,12 +14,12 @@ jobs:
         with:
           node-version: '14'
           registry-url: https://npm.pkg.github.com/
-          scope: '@hon2a'
+          scope: '@wisersolutions'
       - uses: actions/checkout@master
       - run: npm i --frozen-lockfile
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: npm build
+          NODE_AUTH_TOKEN: ${{ secrets.WISER_CI_TOKEN }}
+      - run: npm run build
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
