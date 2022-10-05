@@ -1,14 +1,15 @@
 {
-  "name": "@hon2a/cypress-antd",
-  "version": "0.3.12",
+  "name": "@wisersolutions/cypress-antd",
+  "version": "1.0.0",
   "description": "Helpers for interacting with Ant Design components in Cypress tests.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hon2a/cypress-antd"
+    "url": "git+https://github.com/WiserSolutions/cypress-antd"
   },
   "author": "Wiser Solutions, Inc.",
   "contributors": [
-    "Jan Konopásek"
+    "Jan Konopásek",
+    "Nate Dube"
   ],
   "license": "MIT",
   "main": "./lib/index.js",
@@ -30,7 +31,7 @@
     "@wisersolutions/eslint-config": "^2.1.1",
     "@wisersolutions/eslint-formatter-idea": "^1.0.8",
     "@wisersolutions/transpile-js": "^0.2.0",
-    "antd": "^4.15.6",
+    "antd": "^4.23.0",
     "babel-eslint": "^10.1.0",
     "cypress": "^7.3.0",
     "eslint": "^7.27.0",
